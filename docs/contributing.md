@@ -27,8 +27,8 @@ uv sync
 - keep the base install light and push pandas, geopandas, and shapely behind
   optional extras
 - treat underscore-prefixed modules as implementation details
-- only add symbols to `nyc_geo_toolkit.__init__` when you are willing to
-  support them as public API
+- only add symbols to `nyc_geo_toolkit.__init__` when you are willing to support
+  them as public API
 
 ## Common commands
 

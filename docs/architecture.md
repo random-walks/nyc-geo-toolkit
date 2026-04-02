@@ -1,8 +1,8 @@
 # Architecture
 
 `nyc-geo-toolkit` is a small data-first package. Its job is to ship canonical
-NYC boundary assets and expose a stable top-level API for loading,
-normalizing, converting, and subsetting them.
+NYC boundary assets and expose a stable top-level API for loading, normalizing,
+converting, and subsetting them.
 
 ## Design goals
 

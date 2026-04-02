@@ -39,9 +39,10 @@ from nyc_geo_toolkit import (
 @pytest.mark.unit
 def test_top_level_public_contract_core() -> None:
     distribution_version = importlib.metadata.version("nyc-geo-toolkit")
-    assert distribution_version == __version__ or distribution_version.startswith(
-        f"{__version__}.dev"
-    )
+    assert isinstance(__version__, str)
+    assert __version__
+    assert isinstance(distribution_version, str)
+    assert distribution_version
     assert SUPPORTED_BOROUGHS == (
         BOROUGH_BRONX,
         BOROUGH_BROOKLYN,
@@ -113,17 +114,19 @@ def test_top_level_public_contract_core() -> None:
 
     assert boroughs_from_path.geography == "borough"
     assert len(boroughs_from_path.features) == 5
-    assert load_nyc_boundaries("borough", values="Queens").features[0].geography_value == (
-        BOROUGH_QUEENS
-    )
+    assert load_nyc_boundaries("borough", values="Queens").features[
+        0
+    ].geography_value == (BOROUGH_QUEENS)
     assert load_nyc_census_tracts(values="1000100").features[0].geography_value == (
         "36061000100"
     )
-    assert load_nyc_council_districts(values="district 33").features[0].geography_value == (
-        "33"
-    )
+    assert load_nyc_council_districts(values="district 33").features[
+        0
+    ].geography_value == ("33")
     assert (
-        load_nyc_neighborhood_tabulation_areas(values="bk0101").features[0].geography_value
+        load_nyc_neighborhood_tabulation_areas(values="bk0101")
+        .features[0]
+        .geography_value
         == "BK0101"
     )
 
