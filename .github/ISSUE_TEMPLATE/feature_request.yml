@@ -1,5 +1,7 @@
 name: Feature request
-description: Suggest a new boundary resource, normalization helper, or API improvement for nyc-geo-toolkit.
+description:
+  Suggest a new boundary resource, normalization helper, or API improvement for
+  nyc-geo-toolkit.
 title: "[Feature]: "
 labels:
   - enhancement
@@ -21,6 +23,7 @@ body:
     id: proposal
     attributes:
       label: Proposed solution
-      description: Describe the behavior, API shape, or data resource you have in mind.
+      description:
+        Describe the behavior, API shape, or data resource you have in mind.
     validations:
       required: true

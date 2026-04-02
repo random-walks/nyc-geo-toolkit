@@ -79,7 +79,11 @@ The stable public API centers on:
 
 ## Documentation
 
-Docs: [Home](https://nyc-geo-toolkit.readthedocs.io/en/latest/), [Getting Started](https://nyc-geo-toolkit.readthedocs.io/en/latest/getting-started/), [API Reference](https://nyc-geo-toolkit.readthedocs.io/en/latest/api/), [Architecture](https://nyc-geo-toolkit.readthedocs.io/en/latest/architecture/), [Contributing](https://nyc-geo-toolkit.readthedocs.io/en/latest/contributing/)
+Docs: [Home](https://nyc-geo-toolkit.readthedocs.io/en/latest/),
+[Getting Started](https://nyc-geo-toolkit.readthedocs.io/en/latest/getting-started/),
+[API Reference](https://nyc-geo-toolkit.readthedocs.io/en/latest/api/),
+[Architecture](https://nyc-geo-toolkit.readthedocs.io/en/latest/architecture/),
+[Contributing](https://nyc-geo-toolkit.readthedocs.io/en/latest/contributing/)
 
 ## License
 

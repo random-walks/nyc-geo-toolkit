@@ -171,6 +171,8 @@ src/*/_version.py
 # Local release verification scratch space
 .venv-release-check/
 dist-release-check/
+.venv-testpypi-check/
+.venv-pypi-check/
 
 
 # Caches

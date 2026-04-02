@@ -154,7 +154,7 @@ def normalize_boundary_value(layer: str, value: str) -> str:
                 "Council district numbers must fall between 1 and 51. "
                 f"Got {district_number!r} from {value!r}."
             )
-        return f"{district_number:02d}".lstrip("0") or "0"
+        return f"{district_number:02d}"
     if normalized_layer == "neighborhood_tabulation_area":
         compact_value = re.sub(r"[^A-Z0-9]", "", normalized_value.upper())
         match = _NTA_CODE_RE.fullmatch(compact_value)

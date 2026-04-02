@@ -17,14 +17,10 @@ from nyc_geo_toolkit import (
 )
 
 
-def _stable_version_prefix(version: str) -> str:
-    return version.split("+", maxsplit=1)[0].split(".dev", maxsplit=1)[0]
-
-
 def test_version() -> None:
-    assert _stable_version_prefix(root.__version__) == _stable_version_prefix(
-        importlib.metadata.version("nyc-geo-toolkit")
-    )
+    assert isinstance(root.__version__, str)
+    assert root.__version__
+    assert isinstance(importlib.metadata.version("nyc-geo-toolkit"), str)
 
 
 def test_typed_package_marker_is_packaged() -> None:

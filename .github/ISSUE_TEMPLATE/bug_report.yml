@@ -1,5 +1,7 @@
 name: Bug report
-description: Report a reproducible problem with the nyc-geo-toolkit package, docs, or examples.
+description:
+  Report a reproducible problem with the nyc-geo-toolkit package, docs, or
+  examples.
 title: "[Bug]: "
 labels:
   - bug
@@ -21,7 +23,8 @@ body:
     id: repro
     attributes:
       label: Reproduction
-      description: Share the exact steps, command, or code path that reproduces the issue.
+      description:
+        Share the exact steps, command, or code path that reproduces the issue.
     validations:
       required: true
   - type: textarea
@@ -35,7 +38,9 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Include Python version, install extra set, OS, and any other relevant context.
+      description:
+        Include Python version, install extra set, OS, and any other relevant
+        context.
       placeholder: Python 3.12, `nyc-geo-toolkit[all]`, macOS 15...
     validations:
       required: true
