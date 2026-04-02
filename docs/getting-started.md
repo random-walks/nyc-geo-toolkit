@@ -14,6 +14,7 @@ Optional extras:
 ```bash
 pip install "nyc-geo-toolkit[dataframes]"
 pip install "nyc-geo-toolkit[spatial]"
+pip install "nyc-geo-toolkit[all]"
 ```
 
 ## List supported boundary layers
@@ -22,6 +23,14 @@ pip install "nyc-geo-toolkit[spatial]"
 from nyc_geo_toolkit import list_boundary_layers
 
 print(list_boundary_layers())
+```
+
+## Inspect canonical values for one layer
+
+```python
+from nyc_geo_toolkit import list_boundary_values
+
+print(list_boundary_values("borough"))
 ```
 
 ## Load one packaged layer
@@ -36,8 +45,43 @@ queens = load_nyc_boundaries("borough", values="Queens")
 ## Normalize user input
 
 ```python
-from nyc_geo_toolkit import normalize_boundary_layer, normalize_boundary_value
+from nyc_geo_toolkit import (
+    normalize_boundary_layer,
+    normalize_boundary_value,
+    normalize_boundary_values,
+)
 
 normalize_boundary_layer("zip code")
 normalize_boundary_value("community_district", "01 Brooklyn")
+normalize_boundary_values("borough", ["Queens", "bk"])
+```
+
+## Convert boundaries to GeoJSON
+
+```python
+from nyc_geo_toolkit import boundaries_to_geojson, load_nyc_boundaries
+
+payload = boundaries_to_geojson(
+    load_nyc_boundaries("borough", values=("Queens", "Brooklyn"))
+)
+print(payload["type"])
+print(len(payload["features"]))
+```
+
+## Clip a layer to a bounding box
+
+`clip_boundaries_to_bbox()` requires the spatial stack, so install
+`nyc-geo-toolkit[spatial]` or `nyc-geo-toolkit[all]` first.
+
+```python
+from nyc_geo_toolkit import clip_boundaries_to_bbox, load_nyc_boundaries
+
+clipped = clip_boundaries_to_bbox(
+    load_nyc_boundaries("borough"),
+    min_longitude=-73.97,
+    min_latitude=40.68,
+    max_longitude=-73.84,
+    max_latitude=40.81,
+)
+print([feature.geography_value for feature in clipped.features])
 ```

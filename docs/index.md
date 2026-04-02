@@ -1,14 +1,14 @@
 # nyc-geo-toolkit
 
-`nyc-geo-toolkit` is a lightweight Python package for reusable NYC geography
-resources, boundary catalogs, and normalization helpers.
+`nyc-geo-toolkit` is a reusable core package for canonical NYC boundary data,
+normalization helpers, and typed boundary-loading primitives.
 
-It is designed to support other NYC data tools by making packaged boundary data
-and canonical value handling easy to reuse.
+It exists to keep shared geography logic in one place so downstream NYC tools do
+not need to duplicate packaged boundary assets or geography normalization rules.
 
 Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 
-## What ships today
+## What this package provides
 
 - packaged boundary layers for boroughs, community districts, council districts,
   NTAs, ZCTAs, and census tracts
@@ -28,6 +28,7 @@ Optional helpers:
 ```bash
 pip install "nyc-geo-toolkit[dataframes]"
 pip install "nyc-geo-toolkit[spatial]"
+pip install "nyc-geo-toolkit[all]"
 ```
 
 ## Quickstart
@@ -39,3 +40,11 @@ print(list_boundary_layers())
 queens = load_nyc_boundaries("borough", values="Queens")
 print(queens.features[0].geography_value)
 ```
+
+## Ecosystem
+
+`nyc-geo-toolkit` already powers the geography surface in
+[`nyc311`](https://github.com/random-walks/nyc311). The intended pattern is a
+small shared core here and domain-specific consumer packages on top, with the
+stable top-level `nyc_geo_toolkit` namespace acting as the contract between
+them.

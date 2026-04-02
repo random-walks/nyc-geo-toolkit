@@ -1,13 +1,31 @@
 # Releasing
 
-This guide covers the stable PyPI release workflow for `nyc-geo-toolkit`.
+This guide covers the PyPI release workflow for `nyc-geo-toolkit`.
 
-## Release shape
+## Release discipline
 
-- Stable line: `0.1`
-- Initial stable target example: `0.1.0`
+- Current stable line: `0.1.x`
 - Version source: git tags via Hatch VCS
 - Preferred publish trigger: GitHub Release publication
+
+Patch releases in the `0.1.x` line should stay backward-compatible. If a change
+materially alters the documented public contract, consumer expectations, or
+normalization semantics, cut a new minor release instead of shipping it as a
+patch.
+
+## Pre-release checks
+
+Before tagging a release, run:
+
+```bash
+make ci
+make audit
+make docs-build
+make smoke-dist
+```
+
+If the release touches the top-level API or shared geography behavior, also
+verify downstream consumers such as `nyc311`.
 
 ## Bootstrap checklist
 
@@ -30,7 +48,7 @@ trusted publishing flow can be used:
 
 ## TestPyPI dry run
 
-1. Create the release tag, for example `0.1.0`.
+1. Create the release tag, for example `0.1.3`.
 2. Push the tag.
 3. Run the `CD` workflow manually from that tag with:
    - `publish=true`
