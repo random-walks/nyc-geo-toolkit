@@ -3,6 +3,9 @@
 Contributions are welcome, especially when they keep the toolkit lightweight,
 explicit, and easy to reuse from other NYC data packages.
 
+The toolkit is authored and maintained by
+[Blaise Albis-Burdige](https://blaiseab.com/).
+
 ## Development setup
 
 Full environment:

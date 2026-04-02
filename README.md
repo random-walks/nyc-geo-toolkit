@@ -8,6 +8,8 @@
 Reusable NYC geography resources, normalization helpers, and boundary loaders
 for Python tools.
 
+Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
+
 ## What this package provides
 
 `nyc-geo-toolkit` packages canonical NYC boundary layers and the small helper

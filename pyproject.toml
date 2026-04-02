@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "nyc-geo-toolkit"
 authors = [
-  { name = "random-walks", email = "blaise@buenaola.io" },
+  { name = "Blaise Albis-Burdige" },
 ]
 description = "Reusable NYC geography resources, normalization helpers, and boundary loaders for Python tools."
 readme = "README.md"
@@ -43,6 +43,7 @@ dependencies = []
 [project.urls]
 Homepage = "https://github.com/random-walks/nyc-geo-toolkit"
 "Documentation" = "https://nyc-geo-toolkit.readthedocs.io/"
+Portfolio = "https://blaiseab.com/"
 "Bug Tracker" = "https://github.com/random-walks/nyc-geo-toolkit/issues"
 Discussions = "https://github.com/random-walks/nyc-geo-toolkit/discussions"
 Changelog = "https://github.com/random-walks/nyc-geo-toolkit/releases"

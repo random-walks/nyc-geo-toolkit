@@ -6,6 +6,8 @@ resources, boundary catalogs, and normalization helpers.
 It is designed to support other NYC data tools by making packaged boundary data
 and canonical value handling easy to reuse.
 
+Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
+
 ## What ships today
 
 - packaged boundary layers for boroughs, community districts, council districts,
