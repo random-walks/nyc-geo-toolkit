@@ -12,10 +12,12 @@ Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 
 ## What this package provides
 
-`nyc-geo-toolkit` packages canonical NYC boundary layers and the small helper
+`nyc-geo-toolkit` packages canonical NYC boundary layers and the stable helper
 API needed to discover, normalize, load, subset, and convert them.
 
-The initial release focuses on:
+It is designed to stay small, typed, and reusable across NYC data packages.
+
+The package currently provides:
 
 - packaged boundary layers for boroughs, community districts, council districts,
   NTAs, ZCTAs, and census tracts
@@ -23,6 +25,14 @@ The initial release focuses on:
 - typed boundary models for boundary collections and features
 - GeoJSON and optional DataFrame / GeoDataFrame helpers
 - bbox clipping for typed boundary collections
+
+## Ecosystem
+
+`nyc-geo-toolkit` is the shared geography core for the NYC package ecosystem. It
+already powers the geography layer in
+[`nyc311`](https://github.com/random-walks/nyc311) and is intended to support
+additional consumer packages without forcing each project to duplicate boundary
+data or normalization rules.
 
 ## Install
 
@@ -53,7 +63,7 @@ pip install "nyc-geo-toolkit[all]"
 ## Quick example
 
 ```python
-from nyc_geo_toolkit import load_nyc_boundaries, list_boundary_layers
+from nyc_geo_toolkit import list_boundary_layers, load_nyc_boundaries
 
 print(list_boundary_layers())
 queens = load_nyc_boundaries("borough", values="Queens")
@@ -62,7 +72,9 @@ print(queens.features[0].geography_value)
 
 ## Public surface
 
-The stable public API centers on:
+The stable public API is the top-level `nyc_geo_toolkit` namespace.
+
+Discovery and loading:
 
 - `list_boundary_layers()`
 - `list_boundary_values()`
@@ -72,12 +84,31 @@ The stable public API centers on:
 - `load_nyc_census_tracts()`
 - `load_nyc_council_districts()`
 - `load_nyc_neighborhood_tabulation_areas()`
+
+Normalization:
+
+- `normalize_borough_name()`
 - `normalize_boundary_layer()`
 - `normalize_boundary_value()`
 - `normalize_boundary_values()`
+
+Conversion and spatial helpers:
+
 - `boundaries_to_geojson()`
 - `boundaries_to_dataframe()`
 - `clip_boundaries_to_bbox()`
+
+Models and constants:
+
+- `BoundaryCollection`
+- `BoundaryFeature`
+- `BoundaryLayerSpec`
+- `BOROUGH_*`
+- `SUPPORTED_BOROUGHS`
+- `SUPPORTED_BOUNDARY_GEOGRAPHIES`
+
+Private underscore-prefixed modules are implementation details and may change
+without notice.
 
 ## Documentation
 
@@ -85,7 +116,9 @@ Docs: [Home](https://nyc-geo-toolkit.readthedocs.io/en/latest/),
 [Getting Started](https://nyc-geo-toolkit.readthedocs.io/en/latest/getting-started/),
 [API Reference](https://nyc-geo-toolkit.readthedocs.io/en/latest/api/),
 [Architecture](https://nyc-geo-toolkit.readthedocs.io/en/latest/architecture/),
-[Contributing](https://nyc-geo-toolkit.readthedocs.io/en/latest/contributing/)
+[Contributing](https://nyc-geo-toolkit.readthedocs.io/en/latest/contributing/),
+[Releasing](https://nyc-geo-toolkit.readthedocs.io/en/latest/releasing/),
+[Changelog](https://nyc-geo-toolkit.readthedocs.io/en/latest/changelog/)
 
 ## License
 
