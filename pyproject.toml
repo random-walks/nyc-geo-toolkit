@@ -1,0 +1,142 @@
+[build-system]
+requires = ["hatchling>=1.26", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nyc-geo-toolkit"
+authors = [
+  { name = "random-walks", email = "blaise@buenaola.io" },
+]
+description = "Reusable NYC geography resources, normalization helpers, and boundary loaders for Python tools."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+keywords = [
+  "nyc",
+  "geography",
+  "geojson",
+  "boundaries",
+  "civic-tech",
+  "open-data",
+  "geospatial",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: GIS",
+  "Typing :: Typed",
+]
+dynamic = ["version"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/random-walks/nyc-geo-toolkit"
+"Documentation" = "https://nyc-geo-toolkit.readthedocs.io/"
+"Bug Tracker" = "https://github.com/random-walks/nyc-geo-toolkit/issues"
+Discussions = "https://github.com/random-walks/nyc-geo-toolkit/discussions"
+Changelog = "https://github.com/random-walks/nyc-geo-toolkit/releases"
+
+[project.optional-dependencies]
+dataframes = ["pandas>=2.3.3"]
+spatial = ["geopandas>=1.1", "shapely>=2.1"]
+all = ["geopandas>=1.1", "pandas>=2.3.3", "shapely>=2.1"]
+
+[dependency-groups]
+test = ["pytest >=9", "pytest-cov >=7"]
+dev = [
+  { include-group = "test" },
+  "mypy >=1.18",
+  "pylint >=3.3",
+  "ruff >=0.12",
+]
+docs = [
+  "markdown>=3.9",
+  "mkdocs-material>=9.1.19",
+  "mkdocs>=1.1.2",
+  "mkdocstrings-python>=1.18.2",
+  "pyyaml>=6.0.1",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/nyc_geo_toolkit/_version.py"
+
+[tool.hatch.envs.default]
+dependency-groups = ["dev"]
+
+[tool.hatch.envs.hatch-test]
+dependency-groups = ["test"]
+env-vars.PYTHONWARNDEFAULTENCODING = "1"
+
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-ra", "--showlocals"]
+strict = true
+markers = [
+  "unit: fast local tests for package development",
+  "optional: tests that exercise optional dependency-backed features",
+]
+filterwarnings = ["error"]
+log_level = "INFO"
+testpaths = ["tests"]
+
+[tool.coverage]
+run.source = ["nyc_geo_toolkit"]
+report.exclude_also = ['\.\.\.', 'if typing.TYPE_CHECKING:']
+
+[tool.mypy]
+files = ["src", "tests"]
+python_version = "3.10"
+warn_unused_configs = true
+strict = true
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+warn_unreachable = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[[tool.mypy.overrides]]
+module = "nyc_geo_toolkit.*"
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.ruff]
+show-fixes = true
+
+[tool.ruff.lint]
+extend-select = [
+  "ARG", "B", "BLE", "C4", "DTZ", "EM", "EXE", "FA", "FLY", "FURB", "G", "I", "ICN", "ISC", "LOG", "NPY", "PD", "PERF", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "Q", "RET", "RSE", "RUF", "SIM", "SLOT", "T10", "T20", "TC", "TRY", "UP", "YTT",
+]
+ignore = ["EM", "PLR09", "PLR2004", "RUF022", "SIM103", "TC", "TRY", "FURB110"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["T20"]
+"noxfile.py" = ["EXE001", "T20"]
+
+[tool.pylint]
+py-version = "3.10"
+ignore-paths = [".*/_version.py"]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+  "duplicate-code",
+  "design",
+  "fixme",
+  "line-too-long",
+  "missing-module-docstring",
+  "missing-function-docstring",
+  "wrong-import-position",
+]

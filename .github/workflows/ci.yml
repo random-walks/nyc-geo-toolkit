@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint and types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+        with:
+          enable-cache: true
+      - name: Install lint dependencies
+        run: uv sync --frozen --group docs --all-extras
+      - name: Run Ruff
+        run: uv run --frozen ruff check --output-format=github .
+      - name: Check Ruff formatting
+        run: uv run --frozen ruff format --check .
+      - name: Run mypy
+        run: uv run --frozen mypy
+      - name: Run pylint
+        run: uv run --frozen pylint nyc_geo_toolkit --output-format=github
+      - name: Run public API audit
+        run: uv run --frozen python scripts/audit_public_api.py
+      - name: Run repository hygiene hooks
+        run: >-
+          uvx nox -s lint -- blacken-docs check-added-large-files
+          check-case-conflict check-merge-conflict check-symlinks check-yaml
+          debug-statements end-of-file-fixer mixed-line-ending name-tests-test
+          requirements-txt-fixer trailing-whitespace rst-backticks
+          rst-directive-colons rst-inline-touching-normal prettier codespell
+          shellcheck disallow-caps validate-pyproject check-dependabot
+          check-github-workflows check-readthedocs
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+        with:
+          enable-cache: true
+      - name: Build distributions and validate long description
+        run: make ci-build
+      - name: Smoke-test installed wheel
+        run: make smoke-dist
+  docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+        with:
+          enable-cache: true
+      - name: Install docs dependencies
+        run: uv sync --frozen --group docs
+      - name: Build docs with strict checks
+        run: uv run --frozen mkdocs build --strict
+  tests:
+    name: Test full install (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+        with:
+          enable-cache: true
+      - name: Install full test environment
+        run: uv sync --frozen --all-extras
+      - name: Run full non-live test suite
+        run: >-
+          uv run --frozen pytest -m "not integration" -ra --cov --cov-report=xml
+          --cov-report=term --junitxml="junit/base-${{ matrix.python-version
+          }}.xml" --durations=20
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          check_name:
+            Test Results (full non-live, Python ${{ matrix.python-version }})
+          comment_mode: off
+          files: junit/base-${{ matrix.python-version }}.xml
+      - name: Upload coverage report
+        if: matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+  pass:
+    if: always()
+    needs: [lint, build, docs, tests]
+    runs-on: ubuntu-slim
+    timeout-minutes: 2
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}

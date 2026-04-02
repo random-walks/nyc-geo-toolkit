@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest a new boundary resource, normalization helper, or API improvement for nyc-geo-toolkit.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing an idea.
+        Please keep requests concrete and tied to a reusable geography workflow when possible.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What workflow or user need is not served today?
+      placeholder: I want to...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior, API shape, or data resource you have in mind.
+    validations:
+      required: true
