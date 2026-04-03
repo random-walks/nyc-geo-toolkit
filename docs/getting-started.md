@@ -68,6 +68,21 @@ print(payload["type"])
 print(len(payload["features"]))
 ```
 
+## Use the lightweight geodesy helpers
+
+```python
+from nyc_geo_toolkit import (
+    build_circle_polygon,
+    haversine_distance_meters,
+    walk_radius_meters,
+)
+
+radius = walk_radius_meters(10)
+distance = haversine_distance_meters(40.7061, -74.0086, 40.7580, -73.9855)
+polygon = build_circle_polygon(40.7128, -74.0060, radius)
+print(radius, round(distance), len(polygon))
+```
+
 ## Clip a layer to a bounding box
 
 `clip_boundaries_to_bbox()` requires the spatial stack, so install
