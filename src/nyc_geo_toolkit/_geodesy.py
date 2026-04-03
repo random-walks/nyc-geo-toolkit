@@ -26,15 +26,12 @@ def haversine_distance_meters(
 
     delta_lat = lat2 - lat1
     delta_lon = lon2 - lon1
-    hav = (
-        sin(delta_lat / 2) ** 2
-        + cos(lat1) * cos(lat2) * sin(delta_lon / 2) ** 2
-    )
+    hav = sin(delta_lat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(delta_lon / 2) ** 2
     return 2 * EARTH_RADIUS_METERS * asin(sqrt(hav))
 
 
 def walk_radius_meters(
-    minutes: int | float, *, meters_per_minute: float = DEFAULT_WALKING_METERS_PER_MINUTE
+    minutes: float, *, meters_per_minute: float = DEFAULT_WALKING_METERS_PER_MINUTE
 ) -> float:
     """Convert a walking-time threshold into an approximate radius in meters."""
 

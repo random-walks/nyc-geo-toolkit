@@ -12,7 +12,11 @@ from ._constants import (
     SUPPORTED_BOUNDARY_GEOGRAPHIES,
 )
 from ._conversions import boundaries_to_dataframe, boundaries_to_geojson
-from ._geodesy import build_circle_polygon, haversine_distance_meters, walk_radius_meters
+from ._geodesy import (
+    build_circle_polygon,
+    haversine_distance_meters,
+    walk_radius_meters,
+)
 from ._loaders import (
     list_boundary_layers,
     list_boundary_values,
