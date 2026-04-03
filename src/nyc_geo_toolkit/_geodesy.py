@@ -26,8 +26,10 @@ def haversine_distance_meters(
 
     delta_lat = lat2 - lat1
     delta_lon = lon2 - lon1
-    hav = sin(delta_lat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(delta_lon / 2) ** 2
-    return 2 * EARTH_RADIUS_METERS * asin(sqrt(hav))
+    haversine_term = (
+        sin(delta_lat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(delta_lon / 2) ** 2
+    )
+    return 2 * EARTH_RADIUS_METERS * asin(sqrt(haversine_term))
 
 
 def walk_radius_meters(
