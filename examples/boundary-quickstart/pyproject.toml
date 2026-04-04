@@ -1,0 +1,9 @@
+[project]
+name = "nyc-geo-toolkit-boundary-quickstart"
+version = "0.0.0"
+description = "Boundary loading quickstart for nyc-geo-toolkit."
+requires-python = ">=3.10"
+dependencies = ["nyc-geo-toolkit"]
+
+[tool.uv.sources]
+nyc-geo-toolkit = { path = "../..", editable = true }

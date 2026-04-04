@@ -1,0 +1,49 @@
+version = 1
+revision = 3
+requires-python = ">=3.10"
+
+[[package]]
+name = "nyc-geo-toolkit"
+source = { editable = "../../" }
+
+[package.metadata]
+requires-dist = [
+    { name = "geopandas", marker = "extra == 'all'", specifier = ">=1.1" },
+    { name = "geopandas", marker = "extra == 'spatial'", specifier = ">=1.1" },
+    { name = "pandas", marker = "extra == 'all'", specifier = ">=2.3.3" },
+    { name = "pandas", marker = "extra == 'dataframes'", specifier = ">=2.3.3" },
+    { name = "shapely", marker = "extra == 'all'", specifier = ">=2.1" },
+    { name = "shapely", marker = "extra == 'spatial'", specifier = ">=2.1" },
+]
+provides-extras = ["all", "dataframes", "spatial"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.18" },
+    { name = "pylint", specifier = ">=3.3" },
+    { name = "pytest", specifier = ">=9" },
+    { name = "pytest-cov", specifier = ">=7" },
+    { name = "ruff", specifier = ">=0.12" },
+]
+docs = [
+    { name = "markdown", specifier = ">=3.9" },
+    { name = "mkdocs", specifier = ">=1.1.2" },
+    { name = "mkdocs-material", specifier = ">=9.1.19" },
+    { name = "mkdocstrings-python", specifier = ">=1.18.2" },
+    { name = "pyyaml", specifier = ">=6.0.1" },
+]
+test = [
+    { name = "pytest", specifier = ">=9" },
+    { name = "pytest-cov", specifier = ">=7" },
+]
+
+[[package]]
+name = "nyc-geo-toolkit-boundary-quickstart"
+version = "0.0.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "nyc-geo-toolkit" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "nyc-geo-toolkit", editable = "../../" }]
