@@ -70,6 +70,13 @@ queens = load_nyc_boundaries("borough", values="Queens")
 print(queens.features[0].geography_value)
 ```
 
+## Examples
+
+The repo now also ships self-contained consumer examples under `examples/`:
+
+- `examples/boundary-quickstart/`
+- `examples/normalization-demo/`
+
 ## Public surface
 
 The stable public API is the top-level `nyc_geo_toolkit` namespace.
