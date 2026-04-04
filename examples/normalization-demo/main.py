@@ -33,7 +33,9 @@ def main() -> None:
         "normalized_values": normalized_values,
     }
     artifact_pathname = artifact_path("normalized-values.json")
-    artifact_pathname.write_text(f"{json.dumps(artifact, indent=2)}\n", encoding="utf-8")
+    artifact_pathname.write_text(
+        f"{json.dumps(artifact, indent=2)}\n", encoding="utf-8"
+    )
 
     report = f"""# Normalization Demo Tearsheet
 

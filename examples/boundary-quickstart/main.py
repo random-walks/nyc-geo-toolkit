@@ -28,7 +28,9 @@ def main() -> None:
     queens = load_nyc_boundaries("borough", values="Queens")
     geojson_payload = boundaries_to_geojson(queens)
     geojson_path = artifact_path("queens-borough.geojson")
-    geojson_path.write_text(f"{json.dumps(geojson_payload, indent=2)}\n", encoding="utf-8")
+    geojson_path.write_text(
+        f"{json.dumps(geojson_payload, indent=2)}\n", encoding="utf-8"
+    )
 
     report = f"""# Boundary Quickstart Tearsheet
 
