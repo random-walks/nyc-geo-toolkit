@@ -50,8 +50,8 @@ Changelog = "https://github.com/random-walks/nyc-geo-toolkit/releases"
 
 [project.optional-dependencies]
 dataframes = ["pandas>=2.3.3"]
-spatial = ["geopandas>=1.1", "shapely>=2.1"]
-all = ["geopandas>=1.1", "pandas>=2.3.3", "shapely>=2.1"]
+spatial = ["contextily>=1.6", "geopandas>=1.1", "shapely>=2.1"]
+all = ["contextily>=1.6", "geopandas>=1.1", "pandas>=2.3.3", "shapely>=2.1"]
 
 [dependency-groups]
 test = ["pytest >=9", "pytest-cov >=7"]
