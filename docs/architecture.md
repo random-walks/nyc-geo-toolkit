@@ -80,3 +80,4 @@ For contributors, the internal layout is intentionally simple:
   helpers
 - `nyc_geo_toolkit._conversions` for GeoJSON and DataFrame conversion helpers
 - `nyc_geo_toolkit._ops` for generic clipping operations
+- `nyc_geo_toolkit._basemap` for optional contextily / Web Mercator map helpers

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.7
+
+- add optional map helpers `add_osm_basemap`, `to_web_mercator`, and `bbox_around`
+  (see `nyc_geo_toolkit._basemap`), exported from the top-level namespace
+- declare `contextily` as part of the `spatial` / `all` optional dependency sets
+
 ## 0.1.2
 
 - refresh public authorship metadata to credit Blaise Albis-Burdige directly

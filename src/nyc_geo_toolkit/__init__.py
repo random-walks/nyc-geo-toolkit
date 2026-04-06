@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from ._basemap import add_osm_basemap, bbox_around, to_web_mercator
 from ._constants import (
     BOROUGH_BRONX,
     BOROUGH_BROOKLYN,
@@ -38,6 +39,8 @@ from ._ops import clip_boundaries_to_bbox
 from ._version import version as __version__
 
 __all__ = [
+    "add_osm_basemap",
+    "bbox_around",
     "BOROUGH_BRONX",
     "BOROUGH_BROOKLYN",
     "BOROUGH_MANHATTAN",
@@ -66,5 +69,6 @@ __all__ = [
     "normalize_boundary_layer",
     "normalize_boundary_value",
     "normalize_boundary_values",
+    "to_web_mercator",
     "walk_radius_meters",
 ]
