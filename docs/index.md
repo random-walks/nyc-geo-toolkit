@@ -13,6 +13,8 @@ Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 - packaged boundary layers for boroughs, community districts, council districts,
   NTAs, ZCTAs, and census tracts
 - canonical normalization helpers for layer names and boundary values
+- lightweight dependency-free geodesy helpers for distance checks and first-pass
+  circle catchments
 - typed boundary models for boundary collections and features
 - GeoJSON and optional DataFrame / GeoDataFrame helpers
 - bbox clipping for typed boundary collections

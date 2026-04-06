@@ -1,0 +1,9 @@
+[project]
+name = "nyc-geo-toolkit-normalization-demo"
+version = "0.0.0"
+description = "Normalization demo for nyc-geo-toolkit."
+requires-python = ">=3.10"
+dependencies = ["nyc-geo-toolkit"]
+
+[tool.uv.sources]
+nyc-geo-toolkit = { path = "../..", editable = true }

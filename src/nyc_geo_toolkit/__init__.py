@@ -13,6 +13,11 @@ from ._constants import (
     SUPPORTED_BOUNDARY_GEOGRAPHIES,
 )
 from ._conversions import boundaries_to_dataframe, boundaries_to_geojson
+from ._geodesy import (
+    build_circle_polygon,
+    haversine_distance_meters,
+    walk_radius_meters,
+)
 from ._loaders import (
     list_boundary_layers,
     list_boundary_values,
@@ -46,10 +51,12 @@ __all__ = [
     "BoundaryCollection",
     "BoundaryFeature",
     "BoundaryLayerSpec",
+    "build_circle_polygon",
     "__version__",
     "boundaries_to_dataframe",
     "boundaries_to_geojson",
     "clip_boundaries_to_bbox",
+    "haversine_distance_meters",
     "list_boundary_layers",
     "list_boundary_values",
     "load_boundaries",
@@ -63,4 +70,5 @@ __all__ = [
     "normalize_boundary_value",
     "normalize_boundary_values",
     "to_web_mercator",
+    "walk_radius_meters",
 ]

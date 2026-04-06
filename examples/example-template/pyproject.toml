@@ -1,0 +1,9 @@
+[project]
+name = "nyc-geo-toolkit-example-template"
+version = "0.0.0"
+description = "Bootstrap template for self-contained nyc-geo-toolkit examples."
+requires-python = ">=3.10"
+dependencies = ["nyc-geo-toolkit"]
+
+[tool.uv.sources]
+nyc-geo-toolkit = { path = "../..", editable = true }
