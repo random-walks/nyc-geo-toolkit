@@ -4,7 +4,7 @@ These files allow the temporal framework to be exercised end-to-end.
 Run ``scripts/prepare_historical_boundaries.py`` locally to replace them
 with real data downloaded from Census TIGER/Line and NYC Open Data.
 
-Each placeholder re-uses the 2020 geometry but adjusts property fields
+Each placeholder reuses the 2020 geometry but adjusts property fields
 to match the historical vintage schema.
 """
 
