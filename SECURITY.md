@@ -4,7 +4,7 @@
 
 Security fixes are provided for:
 
-- the latest published PyPI release in the `0.2` line
+- the latest published PyPI release in the `0.1` line
 - the current `main` branch before the next public release
 
 Older tags, prerelease milestones, and abandoned branches may not receive

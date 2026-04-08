@@ -1,4 +1,4 @@
-.PHONY: help install install-dev test test-optional lint lint-fix format docs docs-build audit clean build smoke-dist ci ci-lint ci-build ci-docs ci-tests
+.PHONY: help install install-dev test test-optional lint lint-fix format check docs docs-build audit clean build smoke-dist ci ci-lint ci-build ci-docs ci-tests
 
 help:
 	@echo "Available targets:"
@@ -15,6 +15,7 @@ help:
 	@echo "  docs-build   Build the docs with strict checks"
 	@echo "  audit        Print the public API audit"
 	@echo "  clean        Remove local caches and build artifacts"
+	@echo "  check        Run the lightweight pre-push check (everything CI lints, without build/docs/smoke)"
 	@echo "  ci           Run the local GitHub-CI-equivalent job sequence with summary output"
 
 install:
@@ -79,8 +80,13 @@ ci-tests:
 	uv run --frozen pytest -m "not integration" -ra --cov \
 		--cov-report=xml --cov-report=term --durations=20
 
+check:
+	$(MAKE) ci-lint
+	$(MAKE) ci-tests
+
 format:
 	uv run ruff check --fix . && uv run ruff format .
+	env -u NO_COLOR -u FORCE_COLOR uvx nox -s lint -- prettier
 
 docs:
 	uv run mkdocs serve
