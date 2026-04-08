@@ -2,9 +2,15 @@
 
 ## 0.1.7
 
-- add optional map helpers `add_osm_basemap`, `to_web_mercator`, and `bbox_around`
-  (see `nyc_geo_toolkit._basemap`), exported from the top-level namespace
+- add optional map helpers `add_osm_basemap`, `to_web_mercator`, and
+  `bbox_around` (see `nyc_geo_toolkit._basemap`), exported from the top-level
+  namespace
 - declare `contextily` as part of the `spatial` / `all` optional dependency sets
+- add `DeprecationWarning` filter for the `pyproj` NumPy scalar-conversion
+  warning so basemap tests pass on Python 3.10
+- promote Development Status classifier from Beta to Production/Stable
+- update docs to reflect current public API surface including basemap and
+  geodesy helpers
 
 ## 0.1.2
 

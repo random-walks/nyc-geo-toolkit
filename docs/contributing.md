@@ -33,13 +33,18 @@ uv sync
 ## Common commands
 
 ```bash
-make test
-make test-optional
-make lint
-make docs-build
-make smoke-dist
-make ci
+make test           # run the non-integration pytest suite
+make test-optional  # exercise optional-dependency-backed features
+make lint           # Ruff + mypy + public API audit (fast)
+make format         # apply Ruff and Prettier formatting fixes
+make check          # full pre-push check (lint + tests, matches CI)
+make docs-build     # build the docs with strict checks
+make smoke-dist     # build and smoke-test an installed wheel
+make ci             # full local CI-equivalent (lint + build + smoke + docs + tests)
 ```
+
+**Before pushing**, run `make check` to catch everything CI will catch.
+`make format` auto-fixes both Python (Ruff) and non-Python (Prettier) files.
 
 ## Public API discipline
 
@@ -86,8 +91,13 @@ accompanied by tests.
 Before opening a PR, run:
 
 ```bash
-make ci
-make audit
+make check
 make docs-build
 make smoke-dist
+```
+
+For a full CI-equivalent run (including docs and distribution build):
+
+```bash
+make ci
 ```

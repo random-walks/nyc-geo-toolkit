@@ -22,7 +22,7 @@ keywords = [
   "geospatial",
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
@@ -91,7 +91,10 @@ markers = [
   "unit: fast local tests for package development",
   "optional: tests that exercise optional dependency-backed features",
 ]
-filterwarnings = ["error"]
+filterwarnings = [
+    "error",
+    "ignore:Conversion of an array with ndim > 0 to a scalar:DeprecationWarning",
+]
 log_level = "INFO"
 testpaths = ["tests"]
 

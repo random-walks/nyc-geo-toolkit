@@ -18,6 +18,7 @@ Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 - typed boundary models for boundary collections and features
 - GeoJSON and optional DataFrame / GeoDataFrame helpers
 - bbox clipping for typed boundary collections
+- optional basemap helpers for Web Mercator reprojection and OSM tile overlays
 
 ## Install
 

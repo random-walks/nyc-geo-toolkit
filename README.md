@@ -99,7 +99,19 @@ Normalization:
 - `normalize_boundary_value()`
 - `normalize_boundary_values()`
 
-Conversion and spatial helpers:
+Geodesy helpers:
+
+- `haversine_distance_meters()`
+- `walk_radius_meters()`
+- `build_circle_polygon()`
+
+Basemap and spatial helpers:
+
+- `add_osm_basemap()`
+- `to_web_mercator()`
+- `bbox_around()`
+
+Conversion helpers:
 
 - `boundaries_to_geojson()`
 - `boundaries_to_dataframe()`

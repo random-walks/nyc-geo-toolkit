@@ -83,6 +83,30 @@ polygon = build_circle_polygon(40.7128, -74.0060, radius)
 print(radius, round(distance), len(polygon))
 ```
 
+## Use the optional basemap helpers
+
+These helpers require the `spatial` extra:
+`pip install "nyc-geo-toolkit[spatial]"`.
+
+```python
+from nyc_geo_toolkit import bbox_around, to_web_mercator
+
+# Get a WGS84 bounding box (500 m radius) around a point
+minx, miny, maxx, maxy = bbox_around((-73.98, 40.75), 500.0)
+print(minx, miny, maxx, maxy)
+```
+
+```python
+import geopandas as gpd
+from shapely.geometry import Point
+
+from nyc_geo_toolkit import to_web_mercator
+
+gdf = gpd.GeoDataFrame(geometry=[Point(-73.98, 40.75)], crs="EPSG:4326")
+wm = to_web_mercator(gdf)
+print(wm.crs)
+```
+
 ## Clip a layer to a bounding box
 
 `clip_boundaries_to_bbox()` requires the spatial stack, so install
