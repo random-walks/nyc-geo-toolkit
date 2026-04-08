@@ -11,16 +11,40 @@ from ._normalize import _normalize_space, normalize_boundary_layer
 
 @dataclass(frozen=True)
 class BoundaryLayerSpec:
-    """Metadata describing one packaged NYC boundary layer."""
+    """Metadata describing one packaged NYC boundary layer.
+
+    Attributes:
+        layer: Canonical layer name (e.g. ``"census_tract"``).
+        display_name: Human-readable label for the layer.
+        resource_path: Package-relative path to the GeoJSON file.
+        vintage: Year this boundary data represents (e.g. ``2020``, ``2010``).
+        source_name: Name of the data source organization.
+        source_url: URL to the source data page.
+        feature_count: Expected number of features in the layer.
+    """
 
     layer: str
     display_name: str
     resource_path: str
+    vintage: int = 2020
+    source_name: str = ""
+    source_url: str = ""
+    feature_count: int = 0
 
 
 @dataclass(frozen=True)
 class BoundaryFeature:
-    """A supported boundary feature with canonical geography metadata."""
+    """A single boundary feature with canonical geography metadata.
+
+    Attributes:
+        geography: Canonical layer name (e.g. ``"borough"``).
+        geography_value: Canonical identifier for this feature
+            (e.g. ``"MANHATTAN"``, ``"BROOKLYN 01"``, ``"10001"``).
+        geometry: GeoJSON geometry object (``Polygon`` or ``MultiPolygon``).
+        properties: Additional properties from the source data, excluding
+            ``geography`` and ``geography_value`` which are promoted to
+            top-level fields.
+    """
 
     geography: str
     geography_value: str
@@ -42,10 +66,17 @@ class BoundaryFeature:
 
 @dataclass(frozen=True)
 class BoundaryCollection:
-    """Boundary features for one supported geography type."""
+    """A collection of boundary features for one geography type and vintage.
+
+    Attributes:
+        geography: Canonical layer name shared by all features.
+        features: Tuple of ``BoundaryFeature`` objects.
+        vintage: Year the boundary data represents.
+    """
 
     geography: str
     features: tuple[BoundaryFeature, ...]
+    vintage: int = 2020
 
     def __post_init__(self) -> None:
         normalized_geography = normalize_boundary_layer(self.geography)

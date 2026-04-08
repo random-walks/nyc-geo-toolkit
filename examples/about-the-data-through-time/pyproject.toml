@@ -1,0 +1,12 @@
+[project]
+name = "nyc-geo-toolkit-about-the-data-through-time"
+version = "0.0.0"
+description = "Temporal boundary comparison using nyc-geo-toolkit vintage support."
+requires-python = ">=3.10"
+dependencies = [
+    "nyc-geo-toolkit[spatial]",
+    "matplotlib>=3.10",
+]
+
+[tool.uv.sources]
+nyc-geo-toolkit = { path = "../..", editable = true }

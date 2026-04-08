@@ -9,6 +9,7 @@ from ._constants import (
     BOROUGH_MANHATTAN,
     BOROUGH_QUEENS,
     BOROUGH_STATEN_ISLAND,
+    DEFAULT_VINTAGE,
     SUPPORTED_BOROUGHS,
     SUPPORTED_BOUNDARY_GEOGRAPHIES,
 )
@@ -19,6 +20,8 @@ from ._geodesy import (
     walk_radius_meters,
 )
 from ._loaders import (
+    describe_layer,
+    list_available_vintages,
     list_boundary_layers,
     list_boundary_values,
     load_boundaries,
@@ -27,6 +30,7 @@ from ._loaders import (
     load_nyc_census_tracts,
     load_nyc_council_districts,
     load_nyc_neighborhood_tabulation_areas,
+    vintage_for_census_decade,
 )
 from ._models import BoundaryCollection, BoundaryFeature, BoundaryLayerSpec
 from ._normalize import (
@@ -46,6 +50,7 @@ __all__ = [
     "BOROUGH_MANHATTAN",
     "BOROUGH_QUEENS",
     "BOROUGH_STATEN_ISLAND",
+    "DEFAULT_VINTAGE",
     "SUPPORTED_BOUNDARY_GEOGRAPHIES",
     "SUPPORTED_BOROUGHS",
     "BoundaryCollection",
@@ -56,7 +61,9 @@ __all__ = [
     "boundaries_to_dataframe",
     "boundaries_to_geojson",
     "clip_boundaries_to_bbox",
+    "describe_layer",
     "haversine_distance_meters",
+    "list_available_vintages",
     "list_boundary_layers",
     "list_boundary_values",
     "load_boundaries",
@@ -70,5 +77,6 @@ __all__ = [
     "normalize_boundary_value",
     "normalize_boundary_values",
     "to_web_mercator",
+    "vintage_for_census_decade",
     "walk_radius_meters",
 ]
