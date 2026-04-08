@@ -10,6 +10,7 @@ Use `agentic/` as the branch prefix instead of `claude/`. For example:
 - Use conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `style:`, `test:`
 - Keep subject lines under 72 characters
 - Imperative mood ("add" not "added")
+- Do NOT include the `https://claude.ai/code/session_...` link in commit messages or PR descriptions
 
 ## Pre-push Checklist
 
