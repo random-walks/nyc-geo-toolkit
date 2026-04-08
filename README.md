@@ -5,150 +5,155 @@
 [![PyPI version][pypi-version]][pypi-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
 
+![nyc-geo-toolkit cover figure](docs/assets/images/generated/nyc-geo-toolkit-cover.png)
+
 Reusable NYC geography resources, normalization helpers, and boundary loaders
 for Python tools.
 
 Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 
+## Why this exists
+
+Every NYC data project needs borough boundaries, ZIP lookups, and district
+normalization. `nyc-geo-toolkit` ships canonical boundary GeoJSON and a stable
+Python API so downstream tools don't duplicate that work. Install the base
+package for zero-dependency boundary loading, or add optional extras for pandas,
+geopandas, and basemap helpers.
+
 ## What this package provides
 
-`nyc-geo-toolkit` packages canonical NYC boundary layers and the stable helper
-API needed to discover, normalize, load, subset, and convert them.
-
-It is designed to stay small, typed, and reusable across NYC data packages.
-
-The package currently provides:
-
-- packaged boundary layers for boroughs, community districts, council districts,
-  NTAs, ZCTAs, and census tracts
-- canonical normalization helpers for layer names and boundary values
-- typed boundary models for boundary collections and features
-- GeoJSON and optional DataFrame / GeoDataFrame helpers
-- bbox clipping for typed boundary collections
+- **Packaged boundary layers** for boroughs, community districts, council
+    districts, NTAs, ZCTAs, and census tracts -- no runtime network dependency
+- **Normalization helpers** that turn messy user input (`"bk"`, `"01 Brooklyn"`,
+    `"zip code"`) into canonical values
+- **Geodesy helpers** for great-circle distance, walk-radius circles, and
+    bounding boxes -- dependency-free
+- **Typed models** (`BoundaryCollection`, `BoundaryFeature`) for safe,
+    inspectable boundary data
+- **GeoJSON, DataFrame, and GeoDataFrame conversion** with optional pandas and
+    geopandas extras
+- **Basemap and spatial helpers** for Web Mercator reprojection, OSM tile
+    overlays, and bbox clipping
 
 ## Ecosystem
 
-`nyc-geo-toolkit` is the shared geography core for the NYC package ecosystem. It
-already powers the geography layer in
-[`nyc311`](https://github.com/random-walks/nyc311) and is intended to support
-additional consumer packages without forcing each project to duplicate boundary
-data or normalization rules.
+`nyc-geo-toolkit` is the shared geography core for a family of NYC data
+packages:
+
+| Package                                                          | Description                                  |
+| ---------------------------------------------------------------- | -------------------------------------------- |
+| [`nyc311`](https://github.com/random-walks/nyc311)               | 311 service request analysis and aggregation |
+| [`subway-access`](https://github.com/random-walks/subway-access) | Subway accessibility and coverage analysis   |
+| [`nyc-mesh`](https://github.com/random-walks/nyc-mesh)           | Community mesh network coverage analysis     |
+
+All three depend on the stable `nyc_geo_toolkit` namespace for boundary data,
+normalization, and spatial primitives.
 
 ## Install
 
-Base install:
-
 ```bash
-pip install nyc-geo-toolkit
+pip install nyc-geo-toolkit              # zero-dependency base
+pip install "nyc-geo-toolkit[dataframes]" # + pandas helpers
+pip install "nyc-geo-toolkit[spatial]"    # + geopandas, shapely, contextily
+pip install "nyc-geo-toolkit[all]"        # everything
 ```
 
-With pandas helpers:
+## Quick start
 
-```bash
-pip install "nyc-geo-toolkit[dataframes]"
-```
-
-With geopandas + shapely helpers:
-
-```bash
-pip install "nyc-geo-toolkit[spatial]"
-```
-
-With all optional helpers:
-
-```bash
-pip install "nyc-geo-toolkit[all]"
-```
-
-## Quick example
+### Load and inspect boundaries
 
 ```python
 from nyc_geo_toolkit import list_boundary_layers, load_nyc_boundaries
 
 print(list_boundary_layers())
+# ('borough', 'community_district', 'council_district', ...)
+
 queens = load_nyc_boundaries("borough", values="Queens")
-print(queens.features[0].geography_value)
+print(queens.features[0].geography_value)  # "QUEENS"
 ```
+
+### Normalize messy input
+
+```python
+from nyc_geo_toolkit import normalize_borough_name, normalize_boundary_value
+
+normalize_borough_name("bk")  # "BROOKLYN"
+normalize_boundary_value("community_district", "01 Brooklyn")  # "BROOKLYN 01"
+```
+
+### Plot a boundary layer
+
+```python
+from nyc_geo_toolkit import (
+    load_nyc_boundaries_geodataframe,
+    to_web_mercator,
+    add_osm_basemap,
+)
+
+gdf = to_web_mercator(load_nyc_boundaries_geodataframe("borough"))
+ax = gdf.plot(figsize=(8, 8), edgecolor="white", alpha=0.7, column="geography_value")
+add_osm_basemap(ax)
+```
+
+### Use geodesy helpers
+
+```python
+from nyc_geo_toolkit import (
+    haversine_distance_meters,
+    walk_radius_meters,
+    build_circle_polygon,
+)
+
+walk_radius_meters(10)  # 800.0 meters
+haversine_distance_meters(40.7580, -73.9855, 40.7128, -74.006)  # ~5.2 km
+polygon = build_circle_polygon(40.7128, -74.006, 800)  # 24-sided circle
+```
+
+## API overview
+
+| Category                | Key functions                                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Discovery & loading** | `list_boundary_layers()`, `list_boundary_values()`, `load_nyc_boundaries()`, `load_nyc_boundaries_geodataframe()`     |
+| **Normalization**       | `normalize_borough_name()`, `normalize_boundary_layer()`, `normalize_boundary_value()`, `normalize_boundary_values()` |
+| **Geodesy**             | `haversine_distance_meters()`, `walk_radius_meters()`, `build_circle_polygon()`                                       |
+| **Spatial helpers**     | `add_osm_basemap()`, `to_web_mercator()`, `bbox_around()`, `clip_boundaries_to_bbox()`                                |
+| **Conversion**          | `boundaries_to_geojson()`, `boundaries_to_dataframe()`                                                                |
+| **Models & constants**  | `BoundaryCollection`, `BoundaryFeature`, `BoundaryLayerSpec`, `BOROUGH_*`, `SUPPORTED_BOROUGHS`                       |
+
+Full reference: [API docs](https://nyc-geo-toolkit.readthedocs.io/en/latest/api/)
 
 ## Examples
 
-The repo now also ships self-contained consumer examples under `examples/`:
+The repo ships self-contained examples under `examples/`:
 
-- `examples/boundary-quickstart/`
-- `examples/normalization-demo/`
-
-## Public surface
-
-The stable public API is the top-level `nyc_geo_toolkit` namespace.
-
-Discovery and loading:
-
-- `list_boundary_layers()`
-- `list_boundary_values()`
-- `load_boundaries()`
-- `load_nyc_boundaries()`
-- `load_nyc_boundaries_geodataframe()`
-- `load_nyc_census_tracts()`
-- `load_nyc_council_districts()`
-- `load_nyc_neighborhood_tabulation_areas()`
-
-Normalization:
-
-- `normalize_borough_name()`
-- `normalize_boundary_layer()`
-- `normalize_boundary_value()`
-- `normalize_boundary_values()`
-
-Geodesy helpers:
-
-- `haversine_distance_meters()`
-- `walk_radius_meters()`
-- `build_circle_polygon()`
-
-Basemap and spatial helpers:
-
-- `add_osm_basemap()`
-- `to_web_mercator()`
-- `bbox_around()`
-
-Conversion helpers:
-
-- `boundaries_to_geojson()`
-- `boundaries_to_dataframe()`
-- `clip_boundaries_to_bbox()`
-
-Models and constants:
-
-- `BoundaryCollection`
-- `BoundaryFeature`
-- `BoundaryLayerSpec`
-- `BOROUGH_*`
-- `SUPPORTED_BOROUGHS`
-- `SUPPORTED_BOUNDARY_GEOGRAPHIES`
-
-Private underscore-prefixed modules are implementation details and may change
-without notice.
+- [`examples/about-the-data/`](examples/about-the-data/) -- kitchen-sink
+    visualization of every boundary layer and spatial helper (generates the cover
+    figure above)
+- [`examples/boundary-quickstart/`](examples/boundary-quickstart/) -- basic
+    boundary loading and GeoJSON export
+- [`examples/normalization-demo/`](examples/normalization-demo/) -- input
+    normalization showcase
 
 ## Documentation
 
-Docs: [Home](https://nyc-geo-toolkit.readthedocs.io/en/latest/),
-[Getting Started](https://nyc-geo-toolkit.readthedocs.io/en/latest/getting-started/),
-[API Reference](https://nyc-geo-toolkit.readthedocs.io/en/latest/api/),
-[Architecture](https://nyc-geo-toolkit.readthedocs.io/en/latest/architecture/),
-[Contributing](https://nyc-geo-toolkit.readthedocs.io/en/latest/contributing/),
-[Releasing](https://nyc-geo-toolkit.readthedocs.io/en/latest/releasing/),
-[Changelog](https://nyc-geo-toolkit.readthedocs.io/en/latest/changelog/)
+[Home](https://nyc-geo-toolkit.readthedocs.io/en/latest/) |
+[Getting Started](https://nyc-geo-toolkit.readthedocs.io/en/latest/getting-started/) |
+[Examples](https://nyc-geo-toolkit.readthedocs.io/en/latest/examples/) |
+[API Reference](https://nyc-geo-toolkit.readthedocs.io/en/latest/api/) |
+[Architecture](https://nyc-geo-toolkit.readthedocs.io/en/latest/architecture/)
 
 ## License
 
 MIT.
 
 <!-- prettier-ignore-start -->
-[actions-badge]:            https://github.com/random-walks/nyc-geo-toolkit/actions/workflows/ci.yml/badge.svg
-[actions-link]:             https://github.com/random-walks/nyc-geo-toolkit/actions
-[pypi-link]:                https://pypi.org/project/nyc-geo-toolkit/
-[pypi-platforms]:           https://img.shields.io/pypi/pyversions/nyc-geo-toolkit
-[pypi-version]:             https://img.shields.io/pypi/v/nyc-geo-toolkit
-[rtd-badge]:                https://readthedocs.org/projects/nyc-geo-toolkit/badge/?version=latest
-[rtd-link]:                 https://nyc-geo-toolkit.readthedocs.io/en/latest/?badge=latest
+
 <!-- prettier-ignore-end -->
+
+[actions-badge]: https://github.com/random-walks/nyc-geo-toolkit/actions/workflows/ci.yml/badge.svg
+[actions-link]: https://github.com/random-walks/nyc-geo-toolkit/actions
+[pypi-link]: https://pypi.org/project/nyc-geo-toolkit/
+[pypi-platforms]: https://img.shields.io/pypi/pyversions/nyc-geo-toolkit
+[pypi-version]: https://img.shields.io/pypi/v/nyc-geo-toolkit
+[rtd-badge]: https://readthedocs.org/projects/nyc-geo-toolkit/badge/?version=latest
+[rtd-link]: https://nyc-geo-toolkit.readthedocs.io/en/latest/?badge=latest

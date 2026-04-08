@@ -39,7 +39,8 @@ lint-fix:
 	uv run --frozen ruff format .
 	env -u NO_COLOR -u FORCE_COLOR uvx nox -s lint -- blacken-docs end-of-file-fixer \
 		mixed-line-ending requirements-txt-fixer trailing-whitespace rst-backticks \
-		rst-directive-colons rst-inline-touching-normal prettier codespell
+		rst-directive-colons rst-inline-touching-normal prettier mdformat \
+		markdownlint-cli2 codespell
 	$(MAKE) ci-lint
 
 ci-lint:
@@ -53,9 +54,9 @@ ci-lint:
 		check-case-conflict check-merge-conflict check-symlinks check-yaml \
 		debug-statements end-of-file-fixer mixed-line-ending name-tests-test \
 		requirements-txt-fixer trailing-whitespace rst-backticks \
-		rst-directive-colons rst-inline-touching-normal prettier codespell \
-		shellcheck disallow-caps validate-pyproject check-dependabot \
-		check-github-workflows check-readthedocs
+		rst-directive-colons rst-inline-touching-normal prettier mdformat \
+		markdownlint-cli2 codespell shellcheck disallow-caps validate-pyproject \
+		check-dependabot check-github-workflows check-readthedocs
 
 ci-build:
 	rm -rf dist dist-release-check .venv-release-check

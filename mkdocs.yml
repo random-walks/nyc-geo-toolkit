@@ -40,8 +40,7 @@ plugins:
     handlers:
       python:
         paths: [.]
-        inventories:
-          - https://docs.python.org/3/objects.inv
+        load_external_modules: true
         options:
           members_order: source
           separate_signature: true
@@ -54,6 +53,7 @@ plugins:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Examples: examples.md
   - API Reference: api.md
   - Architecture: architecture.md
   - Contributing: contributing.md

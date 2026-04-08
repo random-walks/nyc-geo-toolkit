@@ -10,7 +10,7 @@ converting, and subsetting them.
 - ship packaged GeoJSON data with no runtime network dependency
 - keep pandas, geopandas, and shapely behind optional extras
 - support downstream NYC packages without embedding consumer-specific adapters
-  in the toolkit
+    in the toolkit
 
 ## Runtime flow
 
@@ -41,30 +41,30 @@ compatibility promises.
 
 ## Ecosystem pattern
 
-`nyc311` is the first consumer of this package, and future packages such as
-`nyc-mesh` or `nyc-subway-access` can follow the same pattern: depend on the
-shared toolkit surface, then add project-specific helpers in the consumer repo.
+`nyc311` is the first consumer of this package, and `nyc-mesh` and
+`subway-access` follow the same pattern: depend on the shared toolkit surface,
+then add project-specific helpers in the consumer repo.
 
 ```mermaid
 flowchart TB
     toolkit["nyc-geo-toolkit"] --> publicApi["Stable top-level API"]
     toolkit --> contractTests["Consumer contract tests"]
     publicApi --> nyc311["nyc311"]
-    publicApi --> futureMesh["nyc-mesh (future)"]
-    publicApi --> futureSubway["nyc-subway-access (future)"]
+    publicApi --> nycMesh["nyc-mesh"]
+    publicApi --> subwayAccess["subway-access"]
     contractTests -.-> nyc311
-    contractTests -.-> futureMesh
-    contractTests -.-> futureSubway
+    contractTests -.-> nycMesh
+    contractTests -.-> subwayAccess
 ```
 
 That design keeps responsibilities clear:
 
 - `nyc-geo-toolkit` owns packaged boundary data, normalization rules, typed
-  models, and the stable public contract
+    models, and the stable public contract
 - consumer packages own their own compatibility shims and domain-specific logic
 - if a consumer needs a reusable primitive, promote that primitive into the
-  toolkit and document it there instead of adding a consumer-specific adapter
-  directory in the toolkit
+    toolkit and document it there instead of adding a consumer-specific adapter
+    directory in the toolkit
 
 ## Internal module map
 
@@ -77,7 +77,7 @@ For contributors, the internal layout is intentionally simple:
 - `nyc_geo_toolkit._resources` for packaged data access
 - `nyc_geo_toolkit._geojson` for parsing GeoJSON into typed models
 - `nyc_geo_toolkit._loaders` for boundary loading and optional GeoDataFrame
-  helpers
+    helpers
 - `nyc_geo_toolkit._conversions` for GeoJSON and DataFrame conversion helpers
 - `nyc_geo_toolkit._ops` for generic clipping operations
 - `nyc_geo_toolkit._basemap` for optional contextily / Web Mercator map helpers

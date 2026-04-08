@@ -1,0 +1,7 @@
+config:
+  default: true
+  MD013: false # line length -- mdformat handles wrapping
+  MD033: false # inline HTML -- needed for badges and prettier-ignore blocks
+  MD041: false # first line h1 -- not always true for mkdocs partials
+  MD024:
+    siblings_only: true # allow duplicate headings in different sections
