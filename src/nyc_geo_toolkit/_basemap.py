@@ -7,24 +7,58 @@ from typing import Any
 
 
 def add_osm_basemap(axes: Any, *, provider: Any | None = None) -> None:
-    """Add a CartoDB Positron basemap (or ``provider``) in Web Mercator."""
+    """Add a basemap to a matplotlib axes in Web Mercator projection.
+
+    Defaults to CartoDB Positron tiles.  Requires the ``spatial`` extra
+    (``pip install nyc-geo-toolkit[spatial]``).
+
+    Args:
+        axes: A matplotlib ``Axes`` object (must already be in EPSG:3857).
+        provider: An optional contextily tile provider.  Defaults to
+            ``CartoDB.Positron``.
+
+    Raises:
+        ImportError: If contextily is not installed.
+    """
     ctx = import_module("contextily")
     source = provider if provider is not None else ctx.providers.CartoDB.Positron
     ctx.add_basemap(axes, source=source, attribution_size=6)
 
 
 def to_web_mercator(geodataframe: Any) -> Any:
-    """Return a copy reprojected to EPSG:3857 (Web Mercator)."""
+    """Return a copy of a GeoDataFrame reprojected to EPSG:3857 (Web Mercator).
+
+    Args:
+        geodataframe: A geopandas ``GeoDataFrame`` in any CRS.
+
+    Returns:
+        A new ``GeoDataFrame`` in EPSG:3857.
+    """
     return geodataframe.to_crs(epsg=3857)
 
 
 def bbox_around(
     point: tuple[float, float], meters: float
 ) -> tuple[float, float, float, float]:
-    """Return ``(minx, miny, maxx, maxy)`` in EPSG:4326 around ``point`` (lon, lat).
+    """Return a WGS84 bounding box around a point.
 
-    The bounds are the axis-aligned envelope of a circle of radius ``meters`` (in
-    real-world meters) in Web Mercator, then reprojected to WGS84.
+    Computes the axis-aligned envelope of a circle with radius *meters*
+    in Web Mercator, then reprojects to EPSG:4326.
+
+    Requires the ``spatial`` extra
+    (``pip install nyc-geo-toolkit[spatial]``).
+
+    Args:
+        point: ``(longitude, latitude)`` in decimal degrees.
+        meters: Buffer radius in real-world meters (must be positive).
+
+    Returns:
+        ``(min_longitude, min_latitude, max_longitude, max_latitude)`` in
+        EPSG:4326.
+
+    Raises:
+        ImportError: If geopandas or shapely is not installed.
+        ValueError: If *meters* is not positive.
     """
     if meters <= 0:
         raise ValueError("meters must be positive.")

@@ -45,9 +45,12 @@ plugins:
           members_order: source
           separate_signature: true
           filters: ["!^_"]
-          show_root_heading: true
-          show_if_no_docstring: true
+          show_root_heading: false
+          show_if_no_docstring: false
           show_signature_annotations: true
+          docstring_style: google
+          show_docstring_attributes: true
+          heading_level: 3
   search: {}
 
 nav:

@@ -64,6 +64,20 @@ def _normalize_space(value: str) -> str:
 
 
 def normalize_borough_name(value: str) -> str:
+    """Normalize a borough name to its canonical uppercase form.
+
+    Accepts common aliases and abbreviations (e.g. ``"bk"`` → ``"BROOKLYN"``,
+    ``"mn"`` → ``"MANHATTAN"``).
+
+    Args:
+        value: A borough name, abbreviation, or alias.
+
+    Returns:
+        Canonical uppercase borough name (e.g. ``"BROOKLYN"``).
+
+    Raises:
+        ValueError: If the value is empty or not a recognized borough.
+    """
     normalized = _normalize_space(value)
     if not normalized:
         raise ValueError("Borough values must not be empty.")
@@ -76,6 +90,21 @@ def normalize_borough_name(value: str) -> str:
 
 
 def normalize_boundary_layer(layer: str) -> str:
+    """Normalize a boundary layer name to its canonical form.
+
+    Accepts common aliases such as ``"zip"`` → ``"zcta"``,
+    ``"nta"`` → ``"neighborhood_tabulation_area"``, and
+    ``"community_board"`` → ``"community_district"``.
+
+    Args:
+        layer: A layer name or alias string.
+
+    Returns:
+        Canonical layer name (e.g. ``"zcta"``, ``"census_tract"``).
+
+    Raises:
+        ValueError: If the layer is not recognized.
+    """
     normalized = _normalize_space(layer).casefold().replace(" ", "_")
     canonical = _LAYER_ALIASES.get(normalized)
     if canonical is None:
@@ -98,6 +127,23 @@ def normalize_boundary_layer(layer: str) -> str:
 
 
 def normalize_boundary_value(layer: str, value: str) -> str:
+    """Normalize a single boundary value for a given layer.
+
+    Each layer has its own normalization rules.  For example, community
+    district values like ``"bk 01"`` become ``"BROOKLYN 01"``, and
+    census tract values accept both 7-digit borough codes and 11-digit
+    GEOIDs.
+
+    Args:
+        layer: Boundary layer name or alias.
+        value: A raw boundary value string.
+
+    Returns:
+        The canonical normalized value.
+
+    Raises:
+        ValueError: If the value cannot be parsed for the given layer.
+    """
     normalized_layer = normalize_boundary_layer(layer)
     normalized_value = _normalize_space(value)
     if not normalized_value:
@@ -185,6 +231,20 @@ def normalize_boundary_value(layer: str, value: str) -> str:
 def normalize_boundary_values(
     layer: str, values: str | Iterable[str] | None
 ) -> tuple[str, ...] | None:
+    """Normalize one or more boundary values for a layer.
+
+    Accepts a single string, an iterable of strings, or ``None``.
+    Each value is passed through ``normalize_boundary_value``.
+    Duplicates are removed while preserving order.
+
+    Args:
+        layer: Boundary layer name or alias.
+        values: A single value, iterable of values, or ``None``.
+
+    Returns:
+        A deduplicated tuple of normalized values, or ``None`` if the
+        input is ``None`` or empty.
+    """
     if values is None:
         return None
     raw_values = (values,) if isinstance(values, str) else tuple(values)
