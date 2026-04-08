@@ -101,7 +101,7 @@ HISTORICAL_LAYER_CATALOG: Final[tuple[BoundaryLayerSpec, ...]] = (
         vintage=2010,
         source_name="NYC Dept of City Planning",
         source_url="https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq",
-        feature_count=262,
+        feature_count=195,
     ),
     BoundaryLayerSpec(
         "council_district",
