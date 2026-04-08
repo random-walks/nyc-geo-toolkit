@@ -25,6 +25,26 @@ def clip_boundaries_to_bbox(
     max_longitude: float,
     max_latitude: float,
 ) -> BoundaryCollection:
+    """Clip boundary features to an axis-aligned bounding box.
+
+    Features that do not intersect the bounding box are dropped.
+    Features that partially overlap are clipped to the box.
+    Requires the ``spatial`` extra (``pip install nyc-geo-toolkit[spatial]``).
+
+    Args:
+        boundaries: A ``BoundaryCollection`` to clip.
+        min_longitude: Western edge (WGS84 degrees).
+        min_latitude: Southern edge (WGS84 degrees).
+        max_longitude: Eastern edge (WGS84 degrees).
+        max_latitude: Northern edge (WGS84 degrees).
+
+    Returns:
+        A new ``BoundaryCollection`` containing only the clipped features.
+
+    Raises:
+        ImportError: If shapely is not installed.
+        ValueError: If the bounding box is degenerate or no features intersect.
+    """
     if min_longitude >= max_longitude or min_latitude >= max_latitude:
         raise ValueError("Bounding boxes must satisfy min < max on both axes.")
     shapely_geometry = _require_shapely()
@@ -51,5 +71,7 @@ def clip_boundaries_to_bbox(
     if not clipped_features:
         raise ValueError("No boundaries intersect the requested bounding box.")
     return BoundaryCollection(
-        geography=boundaries.geography, features=tuple(clipped_features)
+        geography=boundaries.geography,
+        features=tuple(clipped_features),
+        vintage=boundaries.vintage,
     )

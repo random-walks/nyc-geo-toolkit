@@ -11,7 +11,9 @@ from ._models import BoundaryCollection, BoundaryFeature
 _GEOJSON_REQUIRED_KEYS: Final[tuple[str, ...]] = ("type", "features")
 
 
-def boundary_collection_from_geojson(payload: object) -> BoundaryCollection:
+def boundary_collection_from_geojson(
+    payload: object, *, vintage: int = 2020
+) -> BoundaryCollection:
     if not isinstance(payload, dict):
         raise ValueError("Boundary file must be a GeoJSON object.")
     missing_keys = [key for key in _GEOJSON_REQUIRED_KEYS if key not in payload]
@@ -53,7 +55,9 @@ def boundary_collection_from_geojson(payload: object) -> BoundaryCollection:
         )
     if not features:
         raise ValueError("Boundary GeoJSON must contain at least one feature.")
-    return BoundaryCollection(geography=features[0].geography, features=tuple(features))
+    return BoundaryCollection(
+        geography=features[0].geography, features=tuple(features), vintage=vintage
+    )
 
 
 def load_boundary_collection(source: str | Path) -> BoundaryCollection:

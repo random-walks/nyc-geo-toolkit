@@ -17,7 +17,19 @@ def haversine_distance_meters(
     latitude_b: float,
     longitude_b: float,
 ) -> float:
-    """Return the great-circle distance between two WGS84 points in meters."""
+    """Return the great-circle distance between two WGS84 points in meters.
+
+    Uses the haversine formula.  No external dependencies.
+
+    Args:
+        latitude_a: Latitude of the first point (decimal degrees).
+        longitude_a: Longitude of the first point (decimal degrees).
+        latitude_b: Latitude of the second point (decimal degrees).
+        longitude_b: Longitude of the second point (decimal degrees).
+
+    Returns:
+        Distance in meters.
+    """
 
     lat1 = radians(latitude_a)
     lon1 = radians(longitude_a)
@@ -35,7 +47,18 @@ def haversine_distance_meters(
 def walk_radius_meters(
     minutes: float, *, meters_per_minute: float = DEFAULT_WALKING_METERS_PER_MINUTE
 ) -> float:
-    """Convert a walking-time threshold into an approximate radius in meters."""
+    """Convert a walking-time threshold into an approximate radius in meters.
+
+    Args:
+        minutes: Walking time in minutes (must be positive).
+        meters_per_minute: Walking speed. Defaults to 80 m/min (~3 mph).
+
+    Returns:
+        Approximate radius in meters.
+
+    Raises:
+        ValueError: If *minutes* or *meters_per_minute* is not positive.
+    """
 
     if minutes <= 0:
         raise ValueError(_POSITIVE_MINUTES_MESSAGE)
@@ -51,7 +74,23 @@ def build_circle_polygon(
     *,
     sides: int = 24,
 ) -> tuple[tuple[float, float], ...]:
-    """Return a simple lon/lat polygon approximating a circle around a point."""
+    """Return a WGS84 polygon approximating a circle around a point.
+
+    Coordinates are returned as ``(longitude, latitude)`` pairs following
+    the GeoJSON convention.  The polygon is closed (first point == last).
+
+    Args:
+        latitude: Center latitude (decimal degrees).
+        longitude: Center longitude (decimal degrees).
+        radius_meters: Circle radius in meters (must be positive).
+        sides: Number of polygon sides (minimum 8).
+
+    Returns:
+        A tuple of ``(lon, lat)`` coordinate pairs.
+
+    Raises:
+        ValueError: If *radius_meters* is not positive or *sides* < 8.
+    """
 
     if radius_meters <= 0:
         raise ValueError(_POSITIVE_RADIUS_MESSAGE)

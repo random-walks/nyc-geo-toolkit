@@ -129,7 +129,8 @@ ignore = ["EM", "PLR09", "PLR2004", "RUF022", "SIM103", "TC", "TRY", "FURB110"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["T20"]
 "noxfile.py" = ["EXE001", "T20"]
-"examples/**" = ["T20"]
+"examples/**" = ["ARG", "T20"]
+"scripts/**" = ["BLE001", "PLC0415", "T20"]
 
 [tool.pylint]
 py-version = "3.10"
