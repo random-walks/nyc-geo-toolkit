@@ -27,7 +27,7 @@ BOROUGH_BY_CODE = {
 
 
 def _load(name: str) -> dict:
-    with open(DATA_DIR / name, encoding="utf-8") as f:
+    with (DATA_DIR / name).open(encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -50,23 +50,27 @@ def census_tracts_2010() -> None:
         borough_code = p.get("borough_code", 0)
         borough = p.get("borough", "")
         ct_code = p.get("ct2020", "")
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "census_tract",
-                "geography_value": geoid,
-                "geoid": geoid,
-                "ct2010": ct_code,
-                "boroct2010": f"{borough_code}{ct_code}",
-                "borough": borough,
-                "borough_code": borough_code,
-                "county_fips": BOROUGH_BY_CODE.get(borough_code, ("", ""))[1],
-                "ct_label": p.get("ct_label", ""),
-                "name": p.get("name", ""),
-            },
-            "geometry": f["geometry"],
-        })
-    _write("census_tract_2010.geojson", {"type": "FeatureCollection", "features": features})
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "census_tract",
+                    "geography_value": geoid,
+                    "geoid": geoid,
+                    "ct2010": ct_code,
+                    "boroct2010": f"{borough_code}{ct_code}",
+                    "borough": borough,
+                    "borough_code": borough_code,
+                    "county_fips": BOROUGH_BY_CODE.get(borough_code, ("", ""))[1],
+                    "ct_label": p.get("ct_label", ""),
+                    "name": p.get("name", ""),
+                },
+                "geometry": f["geometry"],
+            }
+        )
+    _write(
+        "census_tract_2010.geojson", {"type": "FeatureCollection", "features": features}
+    )
 
 
 def census_tracts_2000() -> None:
@@ -79,23 +83,27 @@ def census_tracts_2000() -> None:
         borough_code = p.get("borough_code", 0)
         borough = p.get("borough", "")
         ct_code = p.get("ct2020", "")
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "census_tract",
-                "geography_value": geoid,
-                "geoid": geoid,
-                "ct2000": ct_code,
-                "boroct2000": f"{borough_code}{ct_code}",
-                "borough": borough,
-                "borough_code": borough_code,
-                "county_fips": BOROUGH_BY_CODE.get(borough_code, ("", ""))[1],
-                "ct_label": p.get("ct_label", ""),
-                "name": p.get("name", ""),
-            },
-            "geometry": f["geometry"],
-        })
-    _write("census_tract_2000.geojson", {"type": "FeatureCollection", "features": features})
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "census_tract",
+                    "geography_value": geoid,
+                    "geoid": geoid,
+                    "ct2000": ct_code,
+                    "boroct2000": f"{borough_code}{ct_code}",
+                    "borough": borough,
+                    "borough_code": borough_code,
+                    "county_fips": BOROUGH_BY_CODE.get(borough_code, ("", ""))[1],
+                    "ct_label": p.get("ct_label", ""),
+                    "name": p.get("name", ""),
+                },
+                "geometry": f["geometry"],
+            }
+        )
+    _write(
+        "census_tract_2000.geojson", {"type": "FeatureCollection", "features": features}
+    )
 
 
 def nta_2010() -> None:
@@ -105,18 +113,23 @@ def nta_2010() -> None:
     for f in src["features"]:
         p = f["properties"]
         nta_code = p.get("nta2020", p.get("geography_value", ""))
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "neighborhood_tabulation_area",
-                "geography_value": nta_code,
-                "nta2010": nta_code,
-                "name": p.get("name", ""),
-                "borough": p.get("borough", ""),
-            },
-            "geometry": f["geometry"],
-        })
-    _write("neighborhood_tabulation_area_2010.geojson", {"type": "FeatureCollection", "features": features})
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "neighborhood_tabulation_area",
+                    "geography_value": nta_code,
+                    "nta2010": nta_code,
+                    "name": p.get("name", ""),
+                    "borough": p.get("borough", ""),
+                },
+                "geometry": f["geometry"],
+            }
+        )
+    _write(
+        "neighborhood_tabulation_area_2010.geojson",
+        {"type": "FeatureCollection", "features": features},
+    )
 
 
 def council_districts_2013() -> None:
@@ -125,17 +138,22 @@ def council_districts_2013() -> None:
     features = []
     for f in src["features"]:
         p = f["properties"]
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "council_district",
-                "geography_value": p.get("geography_value", ""),
-                "district_number": p.get("district_number", 0),
-                "name": p.get("name", ""),
-            },
-            "geometry": f["geometry"],
-        })
-    _write("council_district_2013.geojson", {"type": "FeatureCollection", "features": features})
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "council_district",
+                    "geography_value": p.get("geography_value", ""),
+                    "district_number": p.get("district_number", 0),
+                    "name": p.get("name", ""),
+                },
+                "geometry": f["geometry"],
+            }
+        )
+    _write(
+        "council_district_2013.geojson",
+        {"type": "FeatureCollection", "features": features},
+    )
 
 
 def zcta_2010() -> None:
@@ -145,16 +163,18 @@ def zcta_2010() -> None:
     for f in src["features"]:
         p = f["properties"]
         zcta_code = p.get("zcta", p.get("geography_value", ""))
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "zcta",
-                "geography_value": zcta_code,
-                "zcta": zcta_code,
-                "name": f"ZCTA {zcta_code}",
-            },
-            "geometry": f["geometry"],
-        })
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "zcta",
+                    "geography_value": zcta_code,
+                    "zcta": zcta_code,
+                    "name": f"ZCTA {zcta_code}",
+                },
+                "geometry": f["geometry"],
+            }
+        )
     _write("zcta_2010.geojson", {"type": "FeatureCollection", "features": features})
 
 

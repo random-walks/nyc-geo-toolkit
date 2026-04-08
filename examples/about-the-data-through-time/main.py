@@ -55,13 +55,13 @@ def _clean_map_axes(ax: plt.Axes) -> None:
 def plot_vintage_comparison(
     layer: str,
     vintages: tuple[int, ...],
-    fig: plt.Figure,
+    _fig: plt.Figure,
     axes: list[plt.Axes],
     cmap: str = "Set3",
 ) -> dict[int, int]:
     """Plot one boundary layer across multiple vintages side by side."""
     counts = {}
-    for vintage, ax in zip(vintages, axes):
+    for vintage, ax in zip(vintages, axes, strict=True):
         gdf = _boundaries_to_gdf(layer, vintage)
         counts[vintage] = len(gdf)
         gdf.plot(
@@ -180,7 +180,9 @@ decade, NTAs are redesigned, and council districts are redistricted.
 """
     for layer, vintages in all_vintages.items():
         spec = describe_layer(layer)
-        report += f"| {layer} | {', '.join(str(v) for v in vintages)} | {spec.vintage} |\n"
+        report += (
+            f"| {layer} | {', '.join(str(v) for v in vintages)} | {spec.vintage} |\n"
+        )
 
     report += """
 ## Panels

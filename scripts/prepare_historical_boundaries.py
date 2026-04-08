@@ -20,6 +20,7 @@ from pathlib import Path
 from urllib.request import urlopen
 
 import geopandas as gpd
+from shapely.geometry import mapping, shape
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "src" / "nyc_geo_toolkit" / "data" / "boundaries" / "historical"
@@ -40,15 +41,14 @@ BOROUGH_BY_COUNTY_FIPS = {
 def _download_shapefile_zip(url: str) -> gpd.GeoDataFrame:
     """Download a zipped shapefile and return as GeoDataFrame."""
     print(f"  Downloading {url}")
-    with urlopen(url) as response:  # noqa: S310
+    with urlopen(url) as response:
         data = response.read()
     with zipfile.ZipFile(io.BytesIO(data)) as zf:
-        zf.extractall("/tmp/shp_extract")  # noqa: S202
+        zf.extractall("/tmp/shp_extract")
     shp_files = list(Path("/tmp/shp_extract").rglob("*.shp"))
     if not shp_files:
         raise FileNotFoundError("No .shp file found in archive")
-    gdf = gpd.read_file(shp_files[0])
-    return gdf
+    return gpd.read_file(shp_files[0])
 
 
 def _download_geojson(url: str) -> gpd.GeoDataFrame:
@@ -69,15 +69,15 @@ def _write_geojson(features: list[dict], output_path: Path) -> None:
 
 def _simplify_geometry(geom: dict, tolerance: float = 0.0001) -> dict:
     """Simplify a GeoJSON geometry using Douglas-Peucker."""
-    from shapely.geometry import mapping, shape
-
     return dict(mapping(shape(geom).simplify(tolerance, preserve_topology=True)))
 
 
 def prepare_census_tracts_2010() -> None:
     """Prepare 2010 Census tract boundaries for NYC."""
     print("\n=== Census Tracts 2010 ===")
-    url = "https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2010/tl_2010_36_tract10.zip"
+    url = (
+        "https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2010/tl_2010_36_tract10.zip"
+    )
     gdf = _download_shapefile_zip(url)
 
     # Filter to NYC counties
@@ -90,9 +90,15 @@ def prepare_census_tracts_2010() -> None:
         borough_name, borough_code = BOROUGH_BY_COUNTY_FIPS[county_fips]
         geoid = row["GEOID10"]
         tract_code = row["TRACTCE10"]
-        ct_label = f"{int(tract_code[:4])}.{tract_code[4:]}" if len(tract_code) == 6 else tract_code
+        ct_label = (
+            f"{int(tract_code[:4])}.{tract_code[4:]}"
+            if len(tract_code) == 6
+            else tract_code
+        )
 
-        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0]["geometry"]
+        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0][
+            "geometry"
+        ]
         geom = _simplify_geometry(geom)
 
         features.append(
@@ -120,7 +126,9 @@ def prepare_census_tracts_2010() -> None:
 def prepare_census_tracts_2000() -> None:
     """Prepare 2000 Census tract boundaries for NYC."""
     print("\n=== Census Tracts 2000 ===")
-    url = "https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2000/tl_2010_36_tract00.zip"
+    url = (
+        "https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2000/tl_2010_36_tract00.zip"
+    )
     gdf = _download_shapefile_zip(url)
 
     # Filter to NYC counties
@@ -133,9 +141,15 @@ def prepare_census_tracts_2000() -> None:
         borough_name, borough_code = BOROUGH_BY_COUNTY_FIPS[county_fips]
         geoid = row["CTIDFP00"]
         tract_code = row["TRACTCE00"]
-        ct_label = f"{int(tract_code[:4])}.{tract_code[4:]}" if len(tract_code) == 6 else tract_code
+        ct_label = (
+            f"{int(tract_code[:4])}.{tract_code[4:]}"
+            if len(tract_code) == 6
+            else tract_code
+        )
 
-        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0]["geometry"]
+        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0][
+            "geometry"
+        ]
         geom = _simplify_geometry(geom)
 
         features.append(
@@ -170,7 +184,11 @@ def prepare_nta_2010() -> None:
     # Identify the NTA code column
     nta_col = None
     for col in gdf.columns:
-        if "ntacode" in col.lower() or "nta_code" in col.lower() or col.lower() == "ntacode":
+        if (
+            "ntacode" in col.lower()
+            or "nta_code" in col.lower()
+            or col.lower() == "ntacode"
+        ):
             nta_col = col
             break
     if nta_col is None:
@@ -198,10 +216,21 @@ def prepare_nta_2010() -> None:
             break
 
     borough_name_map = {
-        "1": "MANHATTAN", "2": "BRONX", "3": "BROOKLYN", "4": "QUEENS", "5": "STATEN ISLAND",
-        "MN": "MANHATTAN", "BX": "BRONX", "BK": "BROOKLYN", "QN": "QUEENS", "SI": "STATEN ISLAND",
-        "Manhattan": "MANHATTAN", "Bronx": "BRONX", "Brooklyn": "BROOKLYN",
-        "Queens": "QUEENS", "Staten Island": "STATEN ISLAND",
+        "1": "MANHATTAN",
+        "2": "BRONX",
+        "3": "BROOKLYN",
+        "4": "QUEENS",
+        "5": "STATEN ISLAND",
+        "MN": "MANHATTAN",
+        "BX": "BRONX",
+        "BK": "BROOKLYN",
+        "QN": "QUEENS",
+        "SI": "STATEN ISLAND",
+        "Manhattan": "MANHATTAN",
+        "Bronx": "BRONX",
+        "Brooklyn": "BROOKLYN",
+        "Queens": "QUEENS",
+        "Staten Island": "STATEN ISLAND",
     }
 
     features = []
@@ -222,7 +251,9 @@ def prepare_nta_2010() -> None:
 
         name = str(row[name_col]).strip() if name_col else nta_code
 
-        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0]["geometry"]
+        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0][
+            "geometry"
+        ]
         geom = _simplify_geometry(geom)
 
         features.append(
@@ -249,22 +280,21 @@ def prepare_council_districts_2013() -> None:
     gdf = _download_geojson(url)
     print(f"  Downloaded {len(gdf)} features")
 
-    # The current file might actually be 2023 lines. Try the 2013 lines from archive.
-    # NYC Open Data has historical council district datasets.
-    # Fallback: use DCP BYTES archive
-    alt_url = "https://data.cityofnewyork.us/api/geospatial/yusd-j4xi?method=export&type=GeoJSON"
-
     # Identify the district column
     dist_col = None
     for col in gdf.columns:
-        if "coundist" in col.lower() or "council" in col.lower() or "dist" in col.lower():
+        if (
+            "coundist" in col.lower()
+            or "council" in col.lower()
+            or "dist" in col.lower()
+        ):
             dist_col = col
             break
     if dist_col is None:
         print(f"  Available columns: {list(gdf.columns)}")
         # Try to find any numeric column that could be district numbers
         for col in gdf.columns:
-            if col.lower() not in ("geometry",) and gdf[col].dtype in ("int64", "float64"):
+            if col.lower() != "geometry" and gdf[col].dtype in ("int64", "float64"):
                 dist_col = col
                 break
     if dist_col is None:
@@ -276,7 +306,9 @@ def prepare_council_districts_2013() -> None:
         if not 1 <= district_number <= 51:
             continue
 
-        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0]["geometry"]
+        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0][
+            "geometry"
+        ]
         geom = _simplify_geometry(geom)
 
         features.append(
@@ -299,11 +331,13 @@ def prepare_council_districts_2013() -> None:
 def prepare_zcta_2010() -> None:
     """Prepare 2010 ZCTA boundaries for NYC."""
     print("\n=== ZCTAs 2010 ===")
-    url = "https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010/tl_2010_36_zcta510.zip"
+    url = (
+        "https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010/tl_2010_36_zcta510.zip"
+    )
 
     try:
         gdf = _download_shapefile_zip(url)
-    except Exception:
+    except (FileNotFoundError, OSError):
         # Fallback: national ZCTA file
         print("  State-level not found, trying national file...")
         url = "https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010/tl_2010_us_zcta510.zip"
@@ -312,7 +346,7 @@ def prepare_zcta_2010() -> None:
     # Filter to NYC area ZCTAs (10000-11999 range covers NYC)
     zcta_col = None
     for col in gdf.columns:
-        if "zcta" in col.lower() or col.lower() in ("geoid10",):
+        if "zcta" in col.lower() or col.lower() == "geoid10":
             zcta_col = col
             break
     if zcta_col is None:
@@ -320,12 +354,17 @@ def prepare_zcta_2010() -> None:
         raise ValueError("Could not find ZCTA column")
 
     # Filter to NYC ZIP code ranges
-    nyc_zips = set()
+    nyc_zips: set[str] = set()
     # Load current ZCTA file to get the list of NYC ZCTAs
-    with open(ROOT / "src" / "nyc_geo_toolkit" / "data" / "boundaries" / "zcta.geojson") as f:
+    zcta_path = (
+        ROOT / "src" / "nyc_geo_toolkit" / "data" / "boundaries" / "zcta.geojson"
+    )
+    with zcta_path.open() as f:
         current = json.load(f)
     for feature in current["features"]:
-        zcta = feature["properties"].get("zcta") or feature["properties"].get("geography_value")
+        zcta = feature["properties"].get("zcta") or feature["properties"].get(
+            "geography_value"
+        )
         if zcta:
             nyc_zips.add(str(zcta))
 
@@ -347,7 +386,9 @@ def prepare_zcta_2010() -> None:
     for _, row in gdf.iterrows():
         zcta_code = str(row["_zcta"]).strip()
 
-        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0]["geometry"]
+        geom = json.loads(gpd.GeoSeries([row.geometry]).to_json())["features"][0][
+            "geometry"
+        ]
         geom = _simplify_geometry(geom)
 
         features.append(
@@ -380,7 +421,7 @@ def main() -> None:
     print("\n=== Summary ===")
     for path in sorted(OUTPUT_DIR.glob("*.geojson")):
         size_mb = path.stat().st_size / (1024 * 1024)
-        with open(path) as f:
+        with path.open() as f:
             data = json.load(f)
         count = len(data.get("features", []))
         print(f"  {path.name}: {count} features, {size_mb:.1f} MB")

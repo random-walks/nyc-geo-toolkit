@@ -35,7 +35,7 @@ def _fetch_json(url: str) -> dict:
     """Download and parse JSON from a URL."""
     print(f"  Downloading {url}")
     req = Request(url, headers=GITHUB_HEADERS)
-    with urlopen(req, timeout=120) as resp:  # noqa: S310
+    with urlopen(req, timeout=120) as resp:
         return json.loads(resp.read())
 
 
@@ -81,28 +81,35 @@ def prepare_census_tracts(year: int) -> None:
 
         ct_label = p.get("NAME", tract_code)
 
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "census_tract",
-                "geography_value": geoid,
-                "geoid": geoid,
-                f"ct{year}": tract_code,
-                f"boroct{year}": f"{borough_code}{tract_code}",
-                "borough": borough_name,
-                "borough_code": borough_code,
-                "county_fips": county_fips,
-                "ct_label": ct_label,
-                "name": f"Census Tract {ct_label}",
-            },
-            "geometry": f["geometry"],
-        })
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "census_tract",
+                    "geography_value": geoid,
+                    "geoid": geoid,
+                    f"ct{year}": tract_code,
+                    f"boroct{year}": f"{borough_code}{tract_code}",
+                    "borough": borough_name,
+                    "borough_code": borough_code,
+                    "county_fips": county_fips,
+                    "ct_label": ct_label,
+                    "name": f"Census Tract {ct_label}",
+                },
+                "geometry": f["geometry"],
+            }
+        )
 
-    print(f"  Filtered to {len(features)} NYC tracts (from {len(data['features'])} state-wide)")
-    _write_geojson(f"census_tract_{year}.geojson", {
-        "type": "FeatureCollection",
-        "features": features,
-    })
+    print(
+        f"  Filtered to {len(features)} NYC tracts (from {len(data['features'])} state-wide)"
+    )
+    _write_geojson(
+        f"census_tract_{year}.geojson",
+        {
+            "type": "FeatureCollection",
+            "features": features,
+        },
+    )
     return len(features)
 
 
@@ -120,24 +127,29 @@ def prepare_zcta_2010() -> None:
             continue
         label = p.get("label", modzcta)
 
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "zcta",
-                "geography_value": modzcta,
-                "zcta": modzcta,
-                "modzcta": modzcta,
-                "label": label,
-                "name": f"MODZCTA {modzcta}",
-            },
-            "geometry": f["geometry"],
-        })
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "zcta",
+                    "geography_value": modzcta,
+                    "zcta": modzcta,
+                    "modzcta": modzcta,
+                    "label": label,
+                    "name": f"MODZCTA {modzcta}",
+                },
+                "geometry": f["geometry"],
+            }
+        )
 
     print(f"  Processed {len(features)} ZCTAs")
-    _write_geojson("zcta_2010.geojson", {
-        "type": "FeatureCollection",
-        "features": features,
-    })
+    _write_geojson(
+        "zcta_2010.geojson",
+        {
+            "type": "FeatureCollection",
+            "features": features,
+        },
+    )
     return len(features)
 
 
@@ -149,30 +161,39 @@ def prepare_nta_2010() -> None:
     scripts/prepare_historical_boundaries.py locally (with network access
     to data.cityofnewyork.us) to replace this with real 2010 NTA data.
     """
-    print("\n=== NTAs 2010 (from 2020 data — run prepare_historical_boundaries.py for real 2010 data) ===")
-    with open(DATA_DIR / "neighborhood_tabulation_area.geojson", encoding="utf-8") as fh:
+    print(
+        "\n=== NTAs 2010 (from 2020 data — run prepare_historical_boundaries.py for real 2010 data) ==="
+    )
+    with (DATA_DIR / "neighborhood_tabulation_area.geojson").open(
+        encoding="utf-8"
+    ) as fh:
         src = json.load(fh)
 
     features = []
     for f in src["features"]:
         p = f["properties"]
         nta_code = p.get("nta2020", p.get("geography_value", ""))
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "neighborhood_tabulation_area",
-                "geography_value": nta_code,
-                "nta2010": nta_code,
-                "name": p.get("name", ""),
-                "borough": p.get("borough", ""),
-            },
-            "geometry": f["geometry"],
-        })
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "neighborhood_tabulation_area",
+                    "geography_value": nta_code,
+                    "nta2010": nta_code,
+                    "name": p.get("name", ""),
+                    "borough": p.get("borough", ""),
+                },
+                "geometry": f["geometry"],
+            }
+        )
 
-    _write_geojson("neighborhood_tabulation_area_2010.geojson", {
-        "type": "FeatureCollection",
-        "features": features,
-    })
+    _write_geojson(
+        "neighborhood_tabulation_area_2010.geojson",
+        {
+            "type": "FeatureCollection",
+            "features": features,
+        },
+    )
     return len(features)
 
 
@@ -184,28 +205,35 @@ def prepare_council_districts_2013() -> None:
     scripts/prepare_historical_boundaries.py locally (with network access
     to data.cityofnewyork.us) to replace this with real 2013 district lines.
     """
-    print("\n=== Council Districts 2013 (from current data — run prepare_historical_boundaries.py for real 2013 lines) ===")
-    with open(DATA_DIR / "council_district.geojson", encoding="utf-8") as fh:
+    print(
+        "\n=== Council Districts 2013 (from current data — run prepare_historical_boundaries.py for real 2013 lines) ==="
+    )
+    with (DATA_DIR / "council_district.geojson").open(encoding="utf-8") as fh:
         src = json.load(fh)
 
     features = []
     for f in src["features"]:
         p = f["properties"]
-        features.append({
-            "type": "Feature",
-            "properties": {
-                "geography": "council_district",
-                "geography_value": p.get("geography_value", ""),
-                "district_number": p.get("district_number", 0),
-                "name": p.get("name", ""),
-            },
-            "geometry": f["geometry"],
-        })
+        features.append(
+            {
+                "type": "Feature",
+                "properties": {
+                    "geography": "council_district",
+                    "geography_value": p.get("geography_value", ""),
+                    "district_number": p.get("district_number", 0),
+                    "name": p.get("name", ""),
+                },
+                "geometry": f["geometry"],
+            }
+        )
 
-    _write_geojson("council_district_2013.geojson", {
-        "type": "FeatureCollection",
-        "features": features,
-    })
+    _write_geojson(
+        "council_district_2013.geojson",
+        {
+            "type": "FeatureCollection",
+            "features": features,
+        },
+    )
     return len(features)
 
 
@@ -228,7 +256,9 @@ def main() -> None:
         print(f"  {name}: {count} features, {size_mb:.1f} MB")
     print("\nDone. Census tracts and ZCTAs are real data from official sources.")
     print("NTAs and council districts derived from current data —")
-    print("run scripts/prepare_historical_boundaries.py locally for real historical versions.")
+    print(
+        "run scripts/prepare_historical_boundaries.py locally for real historical versions."
+    )
 
 
 if __name__ == "__main__":
