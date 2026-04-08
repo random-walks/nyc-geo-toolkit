@@ -11,7 +11,9 @@
       "c.basemaps.cartocdn.com",
       "d.basemaps.cartocdn.com",
       "files.pythonhosted.org",
-      "pypi.org"
+      "pypi.org",
+      "www2.census.gov",
+      "data.cityofnewyork.us"
     ]
   }
 }
