@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.2.0
+
+- add vintage-aware temporal boundary loading via
+    `load_nyc_boundaries(..., vintage=year)`
+- add `list_available_vintages()`, `describe_layer()`, and
+    `vintage_for_census_decade()` API functions
+- export `DEFAULT_VINTAGE` constant (2020)
+- ship real historical boundary data from official sources:
+    - Census tracts 2000 (2,219 features) and 2010 (2,167 features) from US
+        Census Bureau TIGER/Line
+    - Neighborhood Tabulation Areas 2010 (195 features) from NYC Dept of City
+        Planning
+    - City Council Districts 2013 (51 features) from NYC Districting Commission
+    - ZCTAs 2010 (178 features) from NYC Health Department MODZCTA
+- add Google-style docstrings to all 36 public API symbols
+- restructure MkDocs documentation with dedicated API reference, getting
+    started guide, and examples page
+- add `py.typed` PEP 561 marker for downstream type checking
+- add `about-the-data-through-time` example demonstrating temporal comparisons
+
 ## 0.1.7
 
 - add optional map helpers `add_osm_basemap`, `to_web_mercator`, and
