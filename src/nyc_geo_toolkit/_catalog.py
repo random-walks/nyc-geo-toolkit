@@ -83,7 +83,7 @@ HISTORICAL_LAYER_CATALOG: Final[tuple[BoundaryLayerSpec, ...]] = (
         vintage=2010,
         source_name="US Census Bureau TIGER/Line",
         source_url="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html",
-        feature_count=2168,
+        feature_count=2167,
     ),
     BoundaryLayerSpec(
         "census_tract",
@@ -92,7 +92,7 @@ HISTORICAL_LAYER_CATALOG: Final[tuple[BoundaryLayerSpec, ...]] = (
         vintage=2000,
         source_name="US Census Bureau TIGER/Line",
         source_url="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html",
-        feature_count=2217,
+        feature_count=2219,
     ),
     BoundaryLayerSpec(
         "neighborhood_tabulation_area",
@@ -101,7 +101,7 @@ HISTORICAL_LAYER_CATALOG: Final[tuple[BoundaryLayerSpec, ...]] = (
         vintage=2010,
         source_name="NYC Dept of City Planning",
         source_url="https://data.cityofnewyork.us/City-Government/2010-Neighborhood-Tabulation-Areas-NTAs-/cpf4-rkhq",
-        feature_count=195,
+        feature_count=262,
     ),
     BoundaryLayerSpec(
         "council_district",
@@ -119,7 +119,7 @@ HISTORICAL_LAYER_CATALOG: Final[tuple[BoundaryLayerSpec, ...]] = (
         vintage=2010,
         source_name="US Census Bureau TIGER/Line",
         source_url="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html",
-        feature_count=263,
+        feature_count=178,
     ),
 )
 
