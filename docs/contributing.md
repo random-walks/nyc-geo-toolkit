@@ -23,12 +23,12 @@ uv sync
 ## Project expectations
 
 - prefer additions that strengthen the shared geography core instead of
-  consumer-specific one-offs
+    consumer-specific one-offs
 - keep the base install light and push pandas, geopandas, and shapely behind
-  optional extras
+    optional extras
 - treat underscore-prefixed modules as implementation details
 - only add symbols to `nyc_geo_toolkit.__init__` when you are willing to support
-  them as public API
+    them as public API
 
 ## Common commands
 

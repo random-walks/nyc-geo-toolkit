@@ -42,6 +42,25 @@ boroughs = load_nyc_boundaries("borough")
 queens = load_nyc_boundaries("borough", values="Queens")
 ```
 
+## Plot a boundary layer
+
+With the `spatial` extra installed, you can plot any boundary layer directly:
+
+```python
+from nyc_geo_toolkit import (
+    add_osm_basemap,
+    load_nyc_boundaries_geodataframe,
+    to_web_mercator,
+)
+
+gdf = to_web_mercator(load_nyc_boundaries_geodataframe("borough"))
+ax = gdf.plot(figsize=(8, 8), edgecolor="white", alpha=0.7, column="geography_value")
+add_osm_basemap(ax)
+```
+
+See the [Examples](examples.md) page for a full multi-panel showcase of every
+boundary layer and spatial helper.
+
 ## Normalize user input
 
 ```python

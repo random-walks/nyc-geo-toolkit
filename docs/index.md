@@ -1,24 +1,27 @@
 # nyc-geo-toolkit
 
+![nyc-geo-toolkit cover figure](assets/images/generated/nyc-geo-toolkit-cover.png)
+
 `nyc-geo-toolkit` is a reusable core package for canonical NYC boundary data,
 normalization helpers, and typed boundary-loading primitives.
 
-It exists to keep shared geography logic in one place so downstream NYC tools do
-not need to duplicate packaged boundary assets or geography normalization rules.
+Every NYC data project needs borough boundaries, ZIP lookups, and district
+normalization. This package ships canonical boundary GeoJSON and a stable Python
+API so downstream tools don't duplicate that work.
 
 Authored by [Blaise Albis-Burdige](https://blaiseab.com/).
 
 ## What this package provides
 
-- packaged boundary layers for boroughs, community districts, council districts,
-  NTAs, ZCTAs, and census tracts
-- canonical normalization helpers for layer names and boundary values
-- lightweight dependency-free geodesy helpers for distance checks and first-pass
-  circle catchments
-- typed boundary models for boundary collections and features
-- GeoJSON and optional DataFrame / GeoDataFrame helpers
-- bbox clipping for typed boundary collections
-- optional basemap helpers for Web Mercator reprojection and OSM tile overlays
+- **Packaged boundary layers** for boroughs, community districts, council
+    districts, NTAs, ZCTAs, and census tracts -- no runtime network dependency
+- **Normalization helpers** that turn messy user input into canonical values
+- **Geodesy helpers** for great-circle distance, walk-radius circles, and
+    bounding boxes -- dependency-free
+- **Typed boundary models** for safe, inspectable boundary data
+- **GeoJSON, DataFrame, and GeoDataFrame conversion** with optional extras
+- **Basemap and spatial helpers** for Web Mercator reprojection, OSM tile
+    overlays, and bbox clipping
 
 ## Install
 
@@ -46,8 +49,15 @@ print(queens.features[0].geography_value)
 
 ## Ecosystem
 
-`nyc-geo-toolkit` already powers the geography surface in
-[`nyc311`](https://github.com/random-walks/nyc311). The intended pattern is a
-small shared core here and domain-specific consumer packages on top, with the
-stable top-level `nyc_geo_toolkit` namespace acting as the contract between
-them.
+`nyc-geo-toolkit` is the shared geography core for a family of NYC data
+packages:
+
+| Package                                                          | Description                                  |
+| ---------------------------------------------------------------- | -------------------------------------------- |
+| [`nyc311`](https://github.com/random-walks/nyc311)               | 311 service request analysis and aggregation |
+| [`subway-access`](https://github.com/random-walks/subway-access) | Subway accessibility and coverage analysis   |
+| [`nyc-mesh`](https://github.com/random-walks/nyc-mesh)           | Community mesh network coverage analysis     |
+
+All three depend on the stable `nyc_geo_toolkit` namespace for boundary data,
+normalization, and spatial primitives. See [Architecture](architecture.md) for
+how the ecosystem fits together.

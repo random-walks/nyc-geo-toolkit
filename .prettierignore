@@ -1,2 +1,16 @@
+# Data artifacts
 *.geojson
-*.geojson
+
+# AI agent instruction files
+CLAUDE.md
+
+# Auto-generated example reports & artifacts
+examples/**/reports/
+examples/**/artifacts/
+
+# Generated images
+docs/assets/images/generated/
+
+# Docs markdown is handled by mdformat, not prettier
+docs/
+README.md
