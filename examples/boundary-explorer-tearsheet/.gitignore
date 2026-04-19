@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.py[cod]
+cache/
+artifacts/
+data/
+manuscripts/

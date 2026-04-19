@@ -1,0 +1,13 @@
+[project]
+name = "nyc-geo-toolkit-boundary-explorer-tearsheet"
+version = "0.0.0"
+description = "Showcase: community-district DiD + jellycell tearsheet, powered by nyc-geo-toolkit, factor-factory, and jellycell."
+requires-python = ">=3.12"
+dependencies = [
+    "nyc-geo-toolkit[spatial]",
+    "factor-factory[did]>=1.0.2,<2",
+    "jellycell[server]>=1.3.5,<2",
+]
+
+[tool.uv.sources]
+nyc-geo-toolkit = { path = "../..", editable = true }
