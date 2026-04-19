@@ -133,6 +133,12 @@ The repo ships self-contained examples under `examples/`:
     boundary loading and GeoJSON export
 - [`examples/normalization-demo/`](examples/normalization-demo/) -- input
     normalization showcase
+- [`examples/boundary-explorer-tearsheet/`](examples/boundary-explorer-tearsheet/)
+    -- interop showcase with
+    [factor-factory](https://github.com/random-walks/factor-factory) and
+    [jellycell](https://github.com/random-walks/jellycell): loads community
+    districts, fits a synthetic DiD, and renders a jellycell findings tearsheet
+    (the canonical pattern downstream packages can copy)
 
 ## Documentation
 

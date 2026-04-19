@@ -15,5 +15,25 @@
       "www2.census.gov",
       "data.cityofnewyork.us"
     ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(uv:*)",
+      "Bash(uvx:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(mypy:*)",
+      "Bash(pylint:*)",
+      "Bash(mkdocs:*)",
+      "Bash(make:*)",
+      "Bash(hatch:*)",
+      "Bash(git *)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh workflow:*)",
+      "Bash(gh release:*)",
+      "WebFetch",
+      "WebSearch"
+    ]
   }
 }

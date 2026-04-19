@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+title: nyc-geo-toolkit
+message: >
+  If you use nyc-geo-toolkit in academic work, please cite this software
+  record and the upstream boundary data sources (listed in
+  docs/changelog.md and in each boundary layer's provenance metadata).
+type: software
+authors:
+  - family-names: Albis-Burdige
+    given-names: Blaise
+    website: https://blaiseab.com/
+repository-code: https://github.com/random-walks/nyc-geo-toolkit
+url: https://nyc-geo-toolkit.readthedocs.io
+license: MIT
+keywords:
+  - nyc
+  - geography
+  - geojson
+  - boundaries
+  - civic-tech
+  - open-data
+  - geospatial
+  - census
+  - community-districts
+  - council-districts
+preferred-citation:
+  type: software
+  title: "nyc-geo-toolkit: Reusable NYC geography resources, normalization helpers, and boundary loaders for Python tools"
+  authors:
+    - family-names: Albis-Burdige
+      given-names: Blaise
+  url: https://github.com/random-walks/nyc-geo-toolkit
+  notes: >
+    nyc-geo-toolkit ships canonical NYC boundary GeoJSON (boroughs,
+    community districts, council districts, NTAs, ZCTAs, census tracts)
+    sourced from the US Census Bureau TIGER/Line, NYC Department of
+    City Planning, NYC Department of Health MODZCTA, and NYC
+    Districting Commission publications. Cite the underlying data
+    source for each boundary layer you rely on in addition to this
+    software record.

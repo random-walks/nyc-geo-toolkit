@@ -70,6 +70,20 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# Claude Code MCP / scheduled-tasks runtime state
+.claude/scheduled_tasks.lock
+
+# examples/ are self-contained uv projects — keep the source of truth
+# (pyproject.toml + main.py + README.md) tracked; drop per-example lock
+# files and transient outputs. Reproducibility comes from pinned version
+# ranges in each example's pyproject.toml, not a lock.
+examples/*/uv.lock
+examples/*/.venv/
+examples/*/artifacts/
+examples/*/cache/
+examples/*/data/
+examples/*/manuscripts/
+
 # PyBuilder
 .pybuilder/
 target/

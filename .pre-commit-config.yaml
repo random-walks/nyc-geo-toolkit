@@ -41,6 +41,10 @@ repos:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
         args: [--prose-wrap=always]
+        # examples/ are self-contained projects with their own voice;
+        # keep root-level markdown tooling off them. mdformat +
+        # markdownlint-cli2 are already scoped to ^docs/|^README\.md$.
+        exclude: ^examples/
 
   - repo: https://github.com/hukkin/mdformat
     rev: "1.0.0"
@@ -50,6 +54,10 @@ repos:
           - mdformat-mkdocs
           - mdformat-gfm
         files: ^docs/|^README\.md$
+        # docs/api.md uses mkdocstrings' ::: directive with a YAML-style
+        # nested options block. mdformat-mkdocs un-indents it destructively,
+        # which breaks the docs build. Keep it out of the hook's scope.
+        exclude: ^docs/api\.md$
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: "v0.17.2"
