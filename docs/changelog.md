@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.3.0
+
+- add Claude Code infrastructure parity with the `random-walks` ecosystem:
+    `.claude/settings.local.json`, `.claude/launch.json`, agents
+    (`release-auditor`, `example-reviewer`), commands (`/bump`,
+    `/release-check`, `/add-example`), and skills (`downstream-compat`,
+    `release-bump`)
+- promote `CLAUDE.md` from the 70-line stub to a dense one-pager covering
+    ecosystem role, zero-runtime-deps policy, optional-extras model,
+    make-check-before-push rule, and the Claude slash-command surface
+- add top-level `AGENTS.md` (canonical agent guide in the AGENTS.md spec
+    format used by Cursor / Codex / Copilot / Aider / Zed)
+- add `.github/PULL_REQUEST_TEMPLATE.md` and `CITATION.cff`
+- add `examples/boundary-explorer-tearsheet/` — self-contained interop
+    showcase that loads community districts, builds a synthetic
+    `factor_factory.tidy.Panel` with a `TreatmentEvent`, fits
+    `factor_factory.engines.did.estimate(..., methods=("twfe",))`, and
+    renders a `factor_factory.jellycell.tearsheets.findings` manuscript;
+    demonstrates the interop pattern downstream packages (`nyc311`,
+    `subway-access`) can copy without adding factor-factory / jellycell
+    to default deps
+- extend CI matrix to `macos-latest` and `windows-latest` alongside
+    `ubuntu-latest` for the `tests` job
+- pin GitHub Actions: `astral-sh/setup-uv@v8.1.0` (exact — upstream has
+    no moving `v8` tag), keep `actions/checkout@v6`,
+    `actions/upload-artifact@v7`, `actions/download-artifact@v8`, and
+    `pypa/gh-action-pypi-publish@release/v1`
+- add `.claude/scheduled_tasks.lock` to `.gitignore`
+
 ## 0.2.0
 
 - add vintage-aware temporal boundary loading via
