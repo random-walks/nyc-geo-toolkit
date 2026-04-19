@@ -10,7 +10,8 @@
      mental check has been done (see .claude/skills/downstream-compat.md). -->
 
 - [ ] `_loaders.py` — boundary loader or catalog lookup changes
-- [ ] `_models.py` — `BoundaryCollection` / `BoundaryFeature` / `BoundaryLayerSpec`
+- [ ] `_models.py` — `BoundaryCollection` / `BoundaryFeature` /
+      `BoundaryLayerSpec`
 - [ ] `_normalize.py` — normalization helpers
 - [ ] `_geodesy.py` / `_basemap.py` / `_ops.py` — spatial helpers
 - [ ] `_constants.py` — `BOROUGH_*`, `SUPPORTED_BOROUGHS`, `DEFAULT_VINTAGE`
@@ -20,15 +21,18 @@
 If any ticked:
 
 - [ ] Change is additive (new symbol, new optional kwarg, new boundary vintage)
-- [ ] OR change is breaking — major-bump required, and `nyc311` + `subway-access` get a coordinated follow-up PR to widen their pin
+- [ ] OR change is breaking — major-bump required, and `nyc311` +
+      `subway-access` get a coordinated follow-up PR to widen their pin
 
 ## Checklist
 
 - [ ] `make check` green locally
 - [ ] `make docs-build` clean (`mkdocs build --strict`)
-- [ ] CHANGELOG entry added to `docs/changelog.md` under the right version header
+- [ ] CHANGELOG entry added to `docs/changelog.md` under the right version
+      header
 - [ ] New optional dep? → folded into the right extra **and** into `all`
-- [ ] New example? → follows the `examples/example-template/` self-contained pattern (`/example-reviewer` clean)
+- [ ] New example? → follows the `examples/example-template/` self-contained
+      pattern (`/example-reviewer` clean)
 - [ ] New public symbol? → docstring + `__all__` entry + public-API audit passes
 
 ## Data provenance (for new boundary layers / vintages)

@@ -1,11 +1,15 @@
 ---
 name: release-bump
-description: One-screen rubric for deciding patch vs minor vs major on nyc-geo-toolkit. Triggers when closing a PR or about to run /bump.
+description:
+  One-screen rubric for deciding patch vs minor vs major on nyc-geo-toolkit.
+  Triggers when closing a PR or about to run /bump.
 ---
 
 # Release bump rubric
 
-`nyc-geo-toolkit` follows the same **minimum-bump** policy as factor-factory / jellycell: patch bumps are cheap, hoard nothing. Cut releases frequently — downstream pins want something stable to target.
+`nyc-geo-toolkit` follows the same **minimum-bump** policy as factor-factory /
+jellycell: patch bumps are cheap, hoard nothing. Cut releases frequently —
+downstream pins want something stable to target.
 
 ## Decision tree
 
@@ -26,9 +30,13 @@ Is the change a bug fix, docs tidy, internal refactor, dep bump, test-only chang
 ## Rules of thumb
 
 - **When in doubt, patch.** You can always cut another release tomorrow.
-- **"If the change is worth merging, it's worth a bump"** — even doc-only cleanups land under a patch bump once a week, not once a quarter.
-- **Major bumps are expensive.** They force downstream adopters (nyc311, subway-access) to read the CHANGELOG and possibly update their pin range. Earn them.
-- **Pre-1.0:** breaking changes are minor per SemVer convention. The `0.x.y` series can churn if needed.
+- **"If the change is worth merging, it's worth a bump"** — even doc-only
+  cleanups land under a patch bump once a week, not once a quarter.
+- **Major bumps are expensive.** They force downstream adopters (nyc311,
+  subway-access) to read the CHANGELOG and possibly update their pin range. Earn
+  them.
+- **Pre-1.0:** breaking changes are minor per SemVer convention. The `0.x.y`
+  series can churn if needed.
 - **Post-1.0:** breaking public-API changes are **always** major. No exceptions.
 
 ## What goes into the CHANGELOG entry
@@ -56,8 +64,13 @@ Not:
 
 ## Version is derived from the git tag
 
-`nyc-geo-toolkit` uses `hatch-vcs` — there's no `_version.py` to bump by hand (well, there is one, but it's generated at build time from the tag). The real "version bump" happens when you push `git tag v<X.Y.Z>`. The `/bump` command just updates `docs/changelog.md` to match.
+`nyc-geo-toolkit` uses `hatch-vcs` — there's no `_version.py` to bump by hand
+(well, there is one, but it's generated at build time from the tag). The real
+"version bump" happens when you push `git tag v<X.Y.Z>`. The `/bump` command
+just updates `docs/changelog.md` to match.
 
 ## Final step
 
-After running `/bump`, review the generated CHANGELOG section. Rewrite any thin "stuff" entries into specific claims with citations / data-source URLs. Then `git commit`, tag, push. The OIDC release workflow handles PyPI.
+After running `/bump`, review the generated CHANGELOG section. Rewrite any thin
+"stuff" entries into specific claims with citations / data-source URLs. Then
+`git commit`, tag, push. The OIDC release workflow handles PyPI.
