@@ -50,6 +50,10 @@ repos:
           - mdformat-mkdocs
           - mdformat-gfm
         files: ^docs/|^README\.md$
+        # docs/api.md uses mkdocstrings' ::: directive with a YAML-style
+        # nested options block. mdformat-mkdocs un-indents it destructively,
+        # which breaks the docs build. Keep it out of the hook's scope.
+        exclude: ^docs/api\.md$
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: "v0.17.2"

@@ -1,0 +1,16 @@
+{
+  "version": "0.1",
+  "servers": [
+    {
+      "name": "docs-preview",
+      "command": "uv run mkdocs serve --dev-addr 127.0.0.1:5180",
+      "port": 5180,
+      "description": "Live-reload MkDocs preview of the nyc-geo-toolkit site."
+    },
+    {
+      "name": "pytest-watch",
+      "command": "uv run pytest --lf --ff -x",
+      "description": "Re-run pytest focused on last-failed, first-failed, fail-fast."
+    }
+  ]
+}

@@ -70,6 +70,9 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# Claude Code MCP / scheduled-tasks runtime state
+.claude/scheduled_tasks.lock
+
 # PyBuilder
 .pybuilder/
 target/
