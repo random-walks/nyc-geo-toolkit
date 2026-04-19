@@ -1,7 +1,9 @@
 .venv/
 __pycache__/
 *.py[cod]
+uv.lock
 cache/
 artifacts/
 data/
 manuscripts/
+reports/

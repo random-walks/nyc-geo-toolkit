@@ -41,6 +41,10 @@ repos:
       - id: prettier
         types_or: [yaml, markdown, html, css, scss, javascript, json]
         args: [--prose-wrap=always]
+        # examples/ are self-contained projects with their own voice;
+        # keep root-level markdown tooling off them. mdformat +
+        # markdownlint-cli2 are already scoped to ^docs/|^README\.md$.
+        exclude: ^examples/
 
   - repo: https://github.com/hukkin/mdformat
     rev: "1.0.0"
