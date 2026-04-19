@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
           enable-cache: true
       - name: Install lint dependencies
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
           enable-cache: true
       - name: Build distributions and validate long description
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
           enable-cache: true
       - name: Install docs dependencies
@@ -84,14 +84,16 @@ jobs:
       - name: Build docs with strict checks
         run: uv run --frozen mkdocs build --strict
   tests:
-    name: Test full install (Python ${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    name:
+      Test full install (${{ matrix.os }} / Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: read
       checks: write
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v6
@@ -100,7 +102,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+      - uses: astral-sh/setup-uv@v8.1.0
         with:
           enable-cache: true
       - name: Install full test environment
@@ -108,18 +110,19 @@ jobs:
       - name: Run full non-live test suite
         run: >-
           uv run --frozen pytest -m "not integration" -ra --cov --cov-report=xml
-          --cov-report=term --junitxml="junit/base-${{ matrix.python-version
-          }}.xml" --durations=20
+          --cov-report=term --junitxml=junit/base-${{ matrix.os }}-${{
+          matrix.python-version }}.xml --durations=20
       - name: Publish test results
-        if: always()
+        if: always() && matrix.os == 'ubuntu-latest'
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name:
-            Test Results (full non-live, Python ${{ matrix.python-version }})
+            Test Results (full non-live, ${{ matrix.os }}, Python ${{
+            matrix.python-version }})
           comment_mode: off
-          files: junit/base-${{ matrix.python-version }}.xml
+          files: junit/base-${{ matrix.os }}-${{ matrix.python-version }}.xml
       - name: Upload coverage report
-        if: matrix.python-version == '3.12'
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
