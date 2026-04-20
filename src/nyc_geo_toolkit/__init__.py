@@ -39,7 +39,7 @@ from ._normalize import (
     normalize_boundary_value,
     normalize_boundary_values,
 )
-from ._ops import clip_boundaries_to_bbox
+from ._ops import centroids_from_boundaries, clip_boundaries_to_bbox
 from ._version import version as __version__
 
 __all__ = [
@@ -60,6 +60,7 @@ __all__ = [
     "__version__",
     "boundaries_to_dataframe",
     "boundaries_to_geojson",
+    "centroids_from_boundaries",
     "clip_boundaries_to_bbox",
     "describe_layer",
     "haversine_distance_meters",
