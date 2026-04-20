@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.0
+
+- add `centroids_from_boundaries(boundaries, *, representative=False)` in
+    `nyc_geo_toolkit._ops`, exported from the top-level namespace. Takes a
+    polygon / multi-polygon `BoundaryCollection` and returns a `Point`
+    `BoundaryCollection` preserving `geography`, `vintage`,
+    `geography_value`, and `properties` on every feature. Round-trips
+    through `boundaries_to_geojson` / `boundaries_to_dataframe`. Pass
+    `representative=True` for `shapely.Geometry.representative_point`
+    (always inside the polygon, safer for non-convex shapes like CDs with
+    concave shorelines) instead of the geometric centroid. Unblocks
+    downstream spatial analyses that need point geometries — distance-band
+    spatial weights, Moran's *I* / LISA, nearest-neighbor joins, choropleth
+    label placement — and replaces the hash-placement workaround in the
+    `blaise-website` resolution-equity showcase. Closes
+    [#12](https://github.com/random-walks/nyc-geo-toolkit/issues/12).
+
 ## 0.3.0
 
 - add Claude Code infrastructure parity with the `random-walks` ecosystem:

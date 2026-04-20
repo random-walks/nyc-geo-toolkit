@@ -17,6 +17,76 @@ def _require_shapely() -> Any:
         ) from exc
 
 
+def centroids_from_boundaries(
+    boundaries: BoundaryCollection,
+    *,
+    representative: bool = False,
+) -> BoundaryCollection:
+    """Compute per-feature centroids as a Point ``BoundaryCollection``.
+
+    For every polygon or multi-polygon feature in ``boundaries``, returns a
+    GeoJSON ``Point`` geometry at either the geometric centroid (default) or
+    the shapely ``representative_point`` (guaranteed to fall inside the
+    polygon, useful for non-convex shapes like community districts with
+    concave shorelines). Feature identity — ``geography``, ``geography_value``,
+    and ``properties`` — round-trips verbatim, so the returned collection
+    can be fed back through :func:`boundaries_to_geojson` or
+    :func:`boundaries_to_dataframe`.
+
+    Requires the ``spatial`` extra (``pip install nyc-geo-toolkit[spatial]``).
+
+    Args:
+        boundaries: A ``BoundaryCollection`` of polygon / multipolygon features.
+        representative: When ``True``, use ``shapely.Geometry.representative_point``
+            (always inside the polygon). When ``False`` (default), use the
+            geometric centroid, which may fall outside for non-convex shapes.
+
+    Returns:
+        A new ``BoundaryCollection`` where each feature's ``geometry`` is a
+        GeoJSON ``Point``. The collection's ``geography`` and ``vintage`` are
+        preserved.
+
+    Raises:
+        ImportError: If shapely is not installed.
+        ValueError: If ``boundaries`` is empty (enforced by
+            ``BoundaryCollection``'s own invariant) or contains a feature
+            whose geometry is empty after centroid projection.
+
+    Example:
+        >>> from nyc_geo_toolkit import (
+        ...     centroids_from_boundaries,
+        ...     load_nyc_boundaries,
+        ... )
+        >>> cds = load_nyc_boundaries("community_district")
+        >>> points = centroids_from_boundaries(cds)
+        >>> points.features[0].geometry["type"]
+        'Point'
+    """
+    shapely_geometry = _require_shapely()
+    point_features: list[BoundaryFeature] = []
+    for feature in boundaries.features:
+        geometry = shapely_geometry.shape(feature.geometry)
+        point = geometry.representative_point() if representative else geometry.centroid
+        if point.is_empty:
+            raise ValueError(
+                f"Centroid for feature {feature.geography_value!r} is empty; "
+                "the source geometry may be degenerate."
+            )
+        point_features.append(
+            BoundaryFeature(
+                geography=feature.geography,
+                geography_value=feature.geography_value,
+                geometry=shapely_geometry.mapping(point),
+                properties=dict(feature.properties),
+            )
+        )
+    return BoundaryCollection(
+        geography=boundaries.geography,
+        features=tuple(point_features),
+        vintage=boundaries.vintage,
+    )
+
+
 def clip_boundaries_to_bbox(
     boundaries: BoundaryCollection,
     *,

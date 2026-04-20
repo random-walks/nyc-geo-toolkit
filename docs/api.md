@@ -65,6 +65,7 @@ of the supported public surface.
 ::: nyc_geo_toolkit
     options:
       members:
+        - centroids_from_boundaries
         - clip_boundaries_to_bbox
         - add_osm_basemap
         - to_web_mercator
