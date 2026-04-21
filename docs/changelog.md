@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.1
+
+- align `examples/boundary-explorer-tearsheet/` with jellycell
+    [v1.4.0](https://github.com/random-walks/jellycell/releases/tag/v1.4.0),
+    which ships a native `jellycell.tearsheets.findings` / `methodology` /
+    `audit` Python API. The showcase now calls `jellycell.tearsheets.findings`
+    directly (passing the DiD results dict in-memory) instead of going
+    through `factor_factory.jellycell.tearsheets.findings`, which was a
+    pre-1.4 shim that read `artifacts/did_results.json` from disk via a
+    project-layout convention. Output is cleaner (proper metric table,
+    no placeholder sections), the showcase no longer depends on
+    factor-factory's jellycell sub-module, and downstream examples
+    picking up this pattern get jellycell's contract guarantees on
+    header pinning and byte-stable regeneration.
+- bump `jellycell[server]` pin on that example from `>=1.3.5,<2` to
+    `>=1.4.0,<2`.
+
 ## 0.4.0
 
 - add `centroids_from_boundaries(boundaries, *, representative=False)` in

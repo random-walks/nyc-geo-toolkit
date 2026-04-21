@@ -14,7 +14,8 @@ The three packages compose:
   (`factor_factory.tidy.Panel`) plus DiD estimation
   (`factor_factory.engines.did.estimate`).
 - **jellycell** supplies the manuscript renderer
-  (`factor_factory.jellycell.tearsheets.findings`).
+  ([`jellycell.tearsheets.findings`](https://github.com/random-walks/jellycell/blob/main/src/jellycell/tearsheets/__init__.py),
+  native in jellycell v1.4.0+ — takes the results dict directly).
 
 ## What it does
 
@@ -28,7 +29,9 @@ The three packages compose:
 6. Saves `artifacts/did_results.json` and the synthetic records to
    `data/synthetic_cd_panel.json`.
 7. Renders `manuscripts/FINDINGS.md` via
-   `factor_factory.jellycell.tearsheets.findings(project=<dir>)`.
+   `jellycell.tearsheets.findings(results=<dict>, out_path=...)` —
+   passing the DiD records directly, no filesystem-walking "project
+   layout" convention. Requires jellycell v1.4.0+.
 
 ## Run
 
