@@ -58,8 +58,9 @@ Before merging any change to the files above, answer these:
 
 ## When in doubt
 
-- Grep the consumer repos if they're checked out locally:
-  `grep -r "from nyc_geo_toolkit" ~/Desktop/blaise-oss/nyc311 ~/Desktop/blaise-oss/subway-access`.
+- Grep the consumer repos if they're checked out locally — in the
+  blaise-dev-workspace layout they're siblings of this repo:
+  `grep -r "from nyc_geo_toolkit" ../nyc311 ../subway-access` (from this repo's root).
 - Or skim their `pyproject.toml` pin: `grep "nyc-geo-toolkit" */pyproject.toml`.
 - If you can't tell, default to **minor** bump and mention the change in the
   CHANGELOG under a `### Changed` subhead. The downstream maintainer will either
